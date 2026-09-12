@@ -1,0 +1,54 @@
+.headingTitle {
+  composes: softWhite from "../colors.module.css";
+  font:
+    1.5rem / 1em "Anton SC",
+    sans-serif;
+}
+
+.buttonText {
+  font:
+    1.2rem / 1.5em "Anton SC",
+    sans-serif;
+}
+
+.h3 {
+  composes: softWhite from "../colors.module.css";
+  font:
+    1.1rem / 2em "Ubuntu",
+    sans-serif;
+}
+
+.baseText {
+  display: flex;
+  min-width: 0px;
+  max-width: 90%;
+  overflow: hidden;
+  composes: softerWhite from "../colors.module.css";
+  text-wrap: wrap;
+  word-wrap: break-word;
+}
+
+.author {
+  composes: baseText;
+  display: flex;
+  min-width: 0px;
+  font:
+    0.9rem / 2em "Ubuntu",
+    sans-serif;
+}
+
+.italicText {
+  composes: baseText;
+  font:
+    1.125rem / 2em "Lobster",
+    sans-serif;
+}
+
+@media screen and (max-width: 400px) {
+  .headingTitle {
+    font-size: 1.6rem;
+  }
+  .italicText {
+    font-size: 1rem;
+  }
+}

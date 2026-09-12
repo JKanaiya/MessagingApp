@@ -1,0 +1,55 @@
+.bgColor {
+  background-color: oklch(0.0757 0.062 258.35);
+}
+
+.secondaryContainer {
+  background-color: oklch(0.3516 0.032 260.37);
+}
+
+.primaryColor {
+  background-color: oklch(50% 0.6 218);
+}
+
+.softWhite {
+  color: oklch(90% 0 90);
+}
+
+.softerWhite {
+  color: oklch(70% 0 90);
+}
+
+.containerLow {
+  background-color: oklch(80% 0 90);
+}
+
+.containerHigh {
+  background-color: oklch(90% 0 90);
+}
+
+.title {
+  color: oklch(90% 0 90);
+}
+
+.secondaryContainer {
+  color: hsl(218, 23%, 28%);
+}
+
+.titleFont {
+  font-family: "Anton Sc", sans-serif;
+}
+
+.italicFont {
+  font-family: "Lobster", sans-serif;
+}
+
+.error {
+  color: oklch(0.6323 0.2516 22);
+}
+
+.errorContainer {
+  background-color: oklch(0.8323 0.2516 22);
+}
+
+.button {
+  composes: primaryColor;
+}

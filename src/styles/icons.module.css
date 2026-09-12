@@ -1,0 +1,48 @@
+.closeIcon {
+  composes: softWhite from "../colors.module.css";
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.commentDelete {
+  composes: softerWhite from "../colors.module.css";
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.commentEdit {
+  composes: softerWhite from "../colors.module.css";
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.authCloseIcon {
+  composes: softWhite from "../colors.module.css";
+  font-size: 30px;
+  cursor: pointer;
+  position: absolute;
+  top: 5%;
+  right: 5%;
+}
+
+.comment {
+  composes: softWhite from "../colors.module.css";
+  font-size: 30px;
+  cursor: pointer;
+  /* position: absolute; */
+  /* top: 10%; */
+  /* right: 10%; */
+}
+
+.edit {
+  font-size: 25px;
+  flex-shrink: 0;
+  composes: softWhite from "../colors.module.css";
+}
+
+.search {
+  font-size: 25px;
+  flex-shrink: 0;
+  composes: softWhite from "../colors.module.css";
+  min-width: 0px;
+}
