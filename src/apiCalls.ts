@@ -51,10 +51,22 @@ const ApiCall = (function () {
     return result;
   };
 
+  const uploadProfileImage = async function (formData: FormData) {
+    const result = await api
+      .post("profile-image", {
+        file: formData.get("file"),
+      })
+      .catch(function (err) {
+        return err.response;
+      });
+    return result;
+  };
+
   return {
     signUp,
     logOut,
     logIn,
+    uploadProfileImage,
   };
 })();
 
