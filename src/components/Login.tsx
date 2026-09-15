@@ -1,6 +1,7 @@
 import ApiCall from "../apiCalls";
-import { useRef, useState } from "react";
-import { useNavigate, useOutletContext } from "react-router";
+import AuthContext from "../AuthContext";
+import { useContext, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 import text from "../styles/text.module.css";
 import auth from "../styles/auth.module.css";
 import icons from "../styles/icons.module.css";
@@ -17,7 +18,8 @@ export type Errors = {
 
 const Login = () => {
   const nav = useNavigate();
-  const [login] = useOutletContext();
+  const { login } = useContext(AuthContext);
+
   const password = useRef("");
   const email = useRef("");
   const [errors, setErrors] = useState<Errors>({
@@ -95,7 +97,7 @@ const Login = () => {
       }
 
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("email", formData.get("email"));
+      localStorage.setItem("messaging_app_email", formData.get("email"));
 
       login(formData.get("email"));
       nav("/");
@@ -146,6 +148,9 @@ const Login = () => {
             Submit
           </button>
         </form>
+        <Link className={icons.authCloseIcon} to="/auth/sign-up">
+          Sign-Up
+        </Link>
       </div>
     </div>
   );

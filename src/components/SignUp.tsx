@@ -1,6 +1,7 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import ApiCall from "../apiCalls";
-import { useOutletContext, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
+import AuthContext from "../AuthContext";
 import text from "../styles/text.module.css";
 import auth from "../styles/auth.module.css";
 import icons from "../styles/icons.module.css";
@@ -19,7 +20,7 @@ const SignUp = () => {
   const password = useRef("");
   const email = useRef("");
   const passMatch = useRef("");
-  const [login] = useOutletContext();
+  const { login } = useContext(AuthContext);
 
   const [errors, setErrors] = useState<Errors>({
     email: "",
@@ -121,7 +122,7 @@ const SignUp = () => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("email", formData.get("email").toString());
 
-      login(formData.get("email"));
+      login(formData.get("messaging_app_email"));
       nav("/");
     } catch (e) {
       console.log(`Error signing up: ${e}`);
@@ -186,6 +187,9 @@ const SignUp = () => {
             Submit
           </button>
         </form>
+        <Link className={icons.authCloseIcon} to="/auth/log-in">
+          Log-In
+        </Link>
       </div>
     </div>
   );
