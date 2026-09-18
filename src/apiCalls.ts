@@ -65,8 +65,16 @@ const ApiCall = (function () {
     return result;
   };
 
+  const authCheck = async function () {
+    const result = await api.post("auth-check").catch(function (err) {
+      return err.response;
+    });
+    return result;
+  };
+
   return {
     signUp,
+    authCheck,
     logOut,
     logIn,
     uploadProfileImage,

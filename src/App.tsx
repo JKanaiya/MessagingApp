@@ -6,28 +6,31 @@ import Home from "./components/Home";
 import AuthContext from "./AuthContext";
 import { RouterProvider } from "react-router";
 import "./styles/reset.css";
+import ApiCall from "./apiCalls.js";
+import type { ChatRoom } from "./components/Chatrooms.js";
+import SelectionContext from "./SelectionContext.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [selectedChat, setSelectedChat] = useState<ChatRoom | null>();
 
-  useEffect(() => {
-    function onConnect() {
-      setIsConnected(true);
-    }
-
-    function onDisconnect() {
-      setIsConnected(false);
-    }
-
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-
-    return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-    };
-  }, [isLoggedIn]);
+  // useEffect(() => {
+  //   function onConnect() {
+  //     setIsConnected(true);
+  //   }
+  //
+  //   function onDisconnect() {
+  //     setIsConnected(false);
+  //   }
+  //
+  //   socket.on("connect", onConnect);
+  //   socket.on("disconnect", onDisconnect);
+  //
+  //   return () => {
+  //     socket.off("connect", onConnect);
+  //     socket.off("disconnect", onDisconnect);
+  //   };
+  // }, [isLoggedIn]);
 
   const [email, setEmail] = useState<string | null>(null);
 
@@ -38,9 +41,16 @@ function App() {
     }
   }, []);
 
-  const login = (email: string) => {
-    setIsLoggedIn(true);
-    setEmail(email);
+  const login = async (email: string) => {
+    const res = await ApiCall.authCheck();
+    console.log(res);
+    if (res.status == 200) {
+      setEmail(email);
+      setIsLoggedIn(true);
+    } else {
+      localStorage.removeItem("user");
+      localStorage.removeItem("messaging_app_email");
+    }
   };
 
   const logout = () => {
@@ -52,7 +62,9 @@ function App() {
 
   return (
     <AuthContext value={{ isLoggedIn, email, login, logout }}>
-      <RouterProvider router={router} />
+      <SelectionContext value={{ selectedChat, setSelectedChat }}>
+        <RouterProvider router={router} />
+      </SelectionContext>
     </AuthContext>
   );
 }
