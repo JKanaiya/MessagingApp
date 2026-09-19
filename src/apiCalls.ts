@@ -54,6 +54,10 @@ const ApiCall = (function () {
     return result;
   };
 
+  // const sendMessage = async function(formData: FormData) {
+  //   const result = await.api.post("message", {})
+  // }
+
   const uploadProfileImage = async function (formData: FormData) {
     const result = await api
       .post("profile-image", {

@@ -1,4 +1,5 @@
 import Chat from "../components/Chat.tsx";
+import { io } from "socket.io-client";
 import axios from "axios";
 import useSWR from "swr";
 import { useContext, useEffect } from "react";
@@ -7,6 +8,7 @@ import SignUp from "./SignUp.tsx";
 import Login from "./Login.tsx";
 import Chatrooms from "./Chatrooms.tsx";
 import SelectionContext from "../SelectionContext.tsx";
+import { socket } from "../socket.ts";
 
 export type User = {
   email: string;
@@ -33,7 +35,7 @@ export type Message = {
 function Home() {
   const { isLoggedIn } = useContext(AuthContext);
 
-  const { selectedChat } = useContext(SelectionContext);
+  const { selectedChat, setSelectedChat } = useContext(SelectionContext);
 
   const token = localStorage.getItem("token");
 
@@ -59,7 +61,7 @@ function Home() {
     mutate,
     isLoading: loading,
   } = useSWR(import.meta.env.VITE_BACKEND_URL, getChatrooms, {
-    // revalidateOnMount: true,
+    revalidateOnMount: true,
   });
   // debugger;
 
@@ -72,7 +74,9 @@ function Home() {
   //   };
   // }, [error, data]);
 
-  // console.log(data.includes(2));
+  socket.on("receive-message", () => {
+    mutate();
+  });
 
   // const users = data.map((chat) => {
   //   return {
@@ -83,10 +87,21 @@ function Home() {
   // //
   // console.log(users);
 
+  // console.log(data);
+
   return (
     <>
-      <div>{isLoggedIn ? data && <Chatrooms chats={data} /> : <Login />}</div>
-      <div>{selectedChat && <Chat data={selectedChat} />}</div>
+      <div>
+        {isLoggedIn ? !loading && <Chatrooms chats={data} /> : <Login />}
+      </div>
+      <div>
+        {selectedChat && data != undefined && (
+          <Chat
+            data={data.filter((chat) => chat.id == selectedChat.id)[0]}
+            mutate={mutate}
+          />
+        )}
+      </div>
     </>
   );
 }

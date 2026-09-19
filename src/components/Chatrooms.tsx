@@ -1,5 +1,6 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import type { Message, Users, User } from "./Home";
+import AuthContext from "../AuthContext";
 import SelectionContext from "../SelectionContext";
 import { socket } from "../socket";
 
@@ -12,6 +13,7 @@ export type ChatRoom = {
 function Chatrooms({ chats }) {
   const users: Users[] = [];
   const email = localStorage.getItem("messaging_app_email");
+  const { isLoggedIn } = useContext(AuthContext);
   const emails: string[] = [];
   const { setSelectedChat, selectedChat } = useContext(SelectionContext);
 
@@ -38,11 +40,16 @@ function Chatrooms({ chats }) {
   const joinChatroom = (chats, user: User) => {
     const chat = chats.filter((chat) => chat.id == user.chatId)[0];
     console.log(chat);
-    setSelectedChat(chat);
     socket.timeout(500).emit("join chat", chat);
+    setSelectedChat(chat);
   };
 
-  console.log(selectedChat);
+  useEffect(() => {
+    socket.connect();
+    return () => {
+      socket.disconnect();
+    };
+  }, [isLoggedIn]);
 
   //
   return (
@@ -54,7 +61,6 @@ function Chatrooms({ chats }) {
           </button>
         </li>
       ))}
-      {}
     </div>
   );
 }
