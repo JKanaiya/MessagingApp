@@ -58,10 +58,11 @@ const ApiCall = (function () {
   //   const result = await.api.post("message", {})
   // }
 
-  const uploadProfileImage = async function (formData: FormData) {
+  const setProfileImage = async function () {
+    const email = localStorage.getItem("messaging_app_email");
     const result = await api
       .post("profile-image", {
-        file: formData.get("file"),
+        email,
       })
       .catch(function (err) {
         return err.response;
@@ -81,7 +82,7 @@ const ApiCall = (function () {
     authCheck,
     logOut,
     logIn,
-    uploadProfileImage,
+    setProfileImage,
   };
 })();
 

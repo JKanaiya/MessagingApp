@@ -1,11 +1,10 @@
 import Chat from "../components/Chat.tsx";
-import { io } from "socket.io-client";
 import axios from "axios";
 import useSWR from "swr";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import AuthContext from "../AuthContext";
-import SignUp from "./SignUp.tsx";
 import Login from "./Login.tsx";
+import Profile from "./Profile.tsx";
 import Chatrooms from "./Chatrooms.tsx";
 import SelectionContext from "../SelectionContext.tsx";
 import { socket } from "../socket.ts";
@@ -37,6 +36,8 @@ function Home() {
   const { isLoggedIn } = useContext(AuthContext);
 
   const { selectedChat, setSelectedChat } = useContext(SelectionContext);
+
+  const [profileOpen, setProfileOpen] = useState(false);
 
   const token = localStorage.getItem("token");
 
@@ -95,6 +96,7 @@ function Home() {
       <div>
         {isLoggedIn ? !loading && <Chatrooms chats={data} /> : <Login />}
       </div>
+      <button onClick={() => setProfileOpen(!profileOpen)}>Profile</button>
       <div>
         {selectedChat && data != undefined && (
           <Chat
@@ -103,6 +105,7 @@ function Home() {
           />
         )}
       </div>
+      {profileOpen && <Profile />}
     </>
   );
 }
