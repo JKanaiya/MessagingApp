@@ -1,3 +1,4 @@
+import { supabase } from "../supabase.ts";
 function Profile() {
   return (
     <div>

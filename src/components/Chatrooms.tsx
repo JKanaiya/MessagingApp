@@ -1,4 +1,5 @@
 import { useContext, useEffect } from "react";
+import { supabase } from "../supabase.ts";
 import type { Message, Users, User } from "./Home";
 import AuthContext from "../AuthContext";
 import SelectionContext from "../SelectionContext";
@@ -19,12 +20,18 @@ function Chatrooms({ chats }) {
 
   if (chats != undefined) {
     chats.forEach((chat) => {
-      chat.messages.forEach((mess: Message) => {
+      chat.messages.forEach(async (mess: Message) => {
         if (mess.user.email == email) return;
         if (!emails.includes(mess.user.email)) {
           emails.push(mess.user.email);
+
+          const userImg = supabase.storage
+            .from("Profiles")
+            .getPublicUrl(mess.user.profileImageUrl!);
+
           users.push({
             user: mess.user,
+            profileImage: userImg.data.publicUrl,
             chatId: mess.chatroomId,
           });
         }
@@ -56,6 +63,7 @@ function Chatrooms({ chats }) {
     <div>
       {users.map((user) => (
         <li>
+          <img src={user.profileImage} />
           <button onClick={() => joinChatroom(chats, user)}>
             <p>{user.user.name}</p>
           </button>

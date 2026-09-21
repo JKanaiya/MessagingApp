@@ -19,6 +19,7 @@ export type User = {
 
 export type Users = {
   user: User;
+  profileImage: string | null;
   chatId: number;
 };
 
