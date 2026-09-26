@@ -97,8 +97,8 @@ function Home() {
     <>
       <div>
         {isLoggedIn ? !loading && <Chatrooms chats={data} /> : <Login />}
+        <button onClick={() => setProfileOpen(!profileOpen)}>Profile</button>
       </div>
-      <button onClick={() => setProfileOpen(!profileOpen)}>Profile</button>
       <div>
         {selectedChat && data != undefined && (
           <Chat

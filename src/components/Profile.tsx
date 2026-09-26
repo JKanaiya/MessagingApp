@@ -9,34 +9,35 @@ function Profile({ user }) {
 
   const handleChange = async (e) => {
     const now = new Date();
-    const newProfileImageUrl = user.user.email + "" + now.toISOString();
+    const newProfileImageUrl = now.toISOString();
 
     setFile(e.target.files[0]);
     const { data, error } = await supabase.storage
       .from("Profiles")
       .remove([`${email}/${user.user.profileImageUrl}`]);
 
-    error ? console.log(error) : console.log(data);
+    error ? console.log("Err" + error) : console.log("Data" + data);
 
-    const response = await ApiCall.setProfileImage(newProfileImageUrl);
+    const response = await ApiCall.setProfileImage(`${newProfileImageUrl}`);
 
-    if (!response.status == 200) {
+    if (response.status != 200) {
       throw new Error(`HTTP Error! Status: ${response.status}`);
     } else {
       const { data, error } = await supabase.storage
         .from("Profiles")
         .upload(`${email}/${newProfileImageUrl}`, file, {
-          cacheControl: "0",
           contentType: "image/png",
         });
-      console.log(`${email}/image.png`);
-      error ? console.log(error) : console.log(data);
+      error ? console.log("Err" + error) : console.log("Data" + data);
     }
   };
-  console.log(user.user.profileImageUrl);
+  const userImg = supabase.storage
+    .from("Profiles")
+    .getPublicUrl(email + "/" + user.user.profileImageUrl!);
 
   return (
     <div>
+      <img src={userImg.data.publicUrl} />
       <input type="file" name="uplaoded_file" onChange={handleChange} />
     </div>
   );
