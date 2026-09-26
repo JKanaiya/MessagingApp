@@ -58,11 +58,12 @@ const ApiCall = (function () {
   //   const result = await.api.post("message", {})
   // }
 
-  const setProfileImage = async function () {
+  const setProfileImage = async function (piUrl: string) {
     const email = localStorage.getItem("messaging_app_email");
     const result = await api
       .post("profile-image", {
         email,
+        piUrl,
       })
       .catch(function (err) {
         return err.response;

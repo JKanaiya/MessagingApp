@@ -48,6 +48,7 @@ function App() {
       setEmail(email);
       setIsLoggedIn(true);
     } else {
+      setIsLoggedIn(false);
       localStorage.removeItem("user");
       localStorage.removeItem("messaging_app_email");
     }
@@ -56,6 +57,7 @@ function App() {
   const logout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     localStorage.removeItem("messaging_app_email");
     setEmail(null);
   };

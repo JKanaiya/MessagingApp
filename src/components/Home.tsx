@@ -89,7 +89,9 @@ function Home() {
   // //
   // console.log(users);
 
-  // console.log(data);
+  const email = localStorage.getItem("messaging_app_email");
+  const user =
+    data && data[0].messages.find((mess) => mess.user.email == email);
 
   return (
     <>
@@ -105,7 +107,7 @@ function Home() {
           />
         )}
       </div>
-      {profileOpen && <Profile />}
+      {data && profileOpen && <Profile user={user} />}
     </>
   );
 }
