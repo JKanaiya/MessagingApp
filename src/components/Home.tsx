@@ -3,7 +3,6 @@ import axios from "axios";
 import useSWR from "swr";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../AuthContext";
-import Login from "./Login.tsx";
 import Profile from "./Profile.tsx";
 import Chatrooms from "./Chatrooms.tsx";
 import SelectionContext from "../SelectionContext.tsx";
@@ -80,34 +79,25 @@ function Home() {
     mutate();
   });
 
-  // const users = data.map((chat) => {
-  //   return {
-  //     chatId: chat.messages.chatroomId,
-  //     user: chat.messages.user,
-  //   };
-  // });
-  // //
-  // console.log(users);
-
   const email = localStorage.getItem("messaging_app_email");
   const user =
     data && data[0].messages.find((mess) => mess.user.email == email);
 
   return (
     <>
-      <div>
-        {isLoggedIn ? !loading && <Chatrooms chats={data} /> : <Login />}
-        <button onClick={() => setProfileOpen(!profileOpen)}>Profile</button>
-      </div>
-      <div>
-        {selectedChat && data != undefined && (
-          <Chat
-            data={data.filter((chat) => chat.id == selectedChat.id)[0]}
-            mutate={mutate}
-          />
-        )}
-      </div>
-      {data && profileOpen && <Profile user={user} />}
+      {data && (
+        <div>
+          {!loading && <Chatrooms chats={data} />}
+          <button onClick={() => setProfileOpen(!profileOpen)}>Profile</button>
+          {selectedChat && (
+            <Chat
+              data={data.filter((chat) => chat.id == selectedChat.id)[0]}
+              mutate={mutate}
+            />
+          )}
+          {profileOpen && <Profile user={user} />}
+        </div>
+      )}
     </>
   );
 }

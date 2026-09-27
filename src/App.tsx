@@ -1,14 +1,24 @@
 import "./App.css";
+import SignUp from "./components/SignUp";
+import Login from "./components/Login";
+import Auth from "./components/Auth.tsx";
 import { socket } from "./socket";
-import { useEffect, useState } from "react";
+import { Children, useEffect, useState } from "react";
 import router from "./routes.jsx";
 import Home from "./components/Home";
 import AuthContext from "./AuthContext";
-import { RouterProvider } from "react-router";
+import {
+  RouterProvider,
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router";
 import "./styles/reset.css";
 import ApiCall from "./apiCalls.js";
 import type { ChatRoom } from "./components/Chatrooms.js";
 import SelectionContext from "./SelectionContext.js";
+import ErrorPage from "./components/ErrorPage.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -65,7 +75,28 @@ function App() {
   return (
     <AuthContext value={{ isLoggedIn, email, login, logout }}>
       <SelectionContext value={{ selectedChat, setSelectedChat }}>
-        <RouterProvider router={router} />
+        <Router>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                isLoggedIn ? <Home /> : <Navigate replace to={"/auth/log-in"} />
+              }
+            />
+            <Route path="auth" element=<Auth /> errorElement=<ErrorPage />>
+              <Route
+                path="sign-up"
+                element=<SignUp />
+                errorElement=<ErrorPage />
+              />
+              <Route
+                path="log-in"
+                element=<Login />
+                errorElement=<ErrorPage />
+              />
+            </Route>
+          </Routes>
+        </Router>
       </SelectionContext>
     </AuthContext>
   );
