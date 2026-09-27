@@ -1,4 +1,5 @@
 import { useContext, useEffect } from "react";
+import chatrooms from "../styles/chatrooms.module.css";
 import { supabase } from "../supabase.ts";
 import type { Message, Users, User } from "./Home";
 import AuthContext from "../AuthContext";
@@ -29,13 +30,16 @@ function Chatrooms({ chats }) {
             .from("Profiles")
             .getPublicUrl(mess.user.profileImageUrl!);
 
+          debugger;
           users.push({
             user: mess.user,
             profileImage: userImg.data.publicUrl,
             chatId: mess.chatroomId,
+            // lastMessage: chat.mes
           });
         }
       });
+      const lastMessage = chat.messages[chat.messages.length - 1].text;
 
       return {
         chatId: chat.messages.chatroomId,
@@ -58,15 +62,16 @@ function Chatrooms({ chats }) {
     };
   }, [isLoggedIn]);
 
-  //
+  // TODO: Base the mapping here off of the chats array, take the users array per chat and filter out the current user. List the chatrooms using that array, and point to their names
   return (
-    <div>
+    <div className={chatrooms.rooms}>
       {users.map((user) => (
-        <li>
+        <li
+          className={chatrooms.chat}
+          onClick={() => joinChatroom(chats, user)}
+        >
           <img src={user.profileImage} />
-          <button onClick={() => joinChatroom(chats, user)}>
-            <p>{user.user.name}</p>
-          </button>
+          <p>{user.user.name}</p>
         </li>
       ))}
     </div>

@@ -1,6 +1,7 @@
 import Chat from "../components/Chat.tsx";
 import axios from "axios";
 import useSWR from "swr";
+import home from "../styles/home.module.css";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../AuthContext";
 import Profile from "./Profile.tsx";
@@ -13,6 +14,7 @@ export type User = {
   id: number;
   name: string;
   profileImageUrl: string;
+  lastMessage: string | undefined;
 };
 
 export type Users = {
@@ -86,7 +88,7 @@ function Home() {
   return (
     <>
       {data && (
-        <div>
+        <div className={home.home}>
           {!loading && <Chatrooms chats={data} />}
           <button onClick={() => setProfileOpen(!profileOpen)}>Profile</button>
           {selectedChat && (
