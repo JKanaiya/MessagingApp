@@ -13,43 +13,25 @@ export type ChatRoom = {
 };
 
 function Chatrooms({ chats }) {
-  const users: Users[] = [];
   const email = localStorage.getItem("messaging_app_email");
   const { isLoggedIn } = useContext(AuthContext);
-  const emails: string[] = [];
   const { setSelectedChat, selectedChat } = useContext(SelectionContext);
 
   if (chats != undefined) {
     chats.forEach((chat) => {
-      chat.messages.forEach(async (mess: Message) => {
-        if (mess.user.email == email) return;
-        if (!emails.includes(mess.user.email)) {
-          emails.push(mess.user.email);
+      chat.users.map((user) => {
+        const userImg = supabase.storage
+          .from("Profiles")
+          .getPublicUrl(user.email + "/" + user.profileImageUrl!);
 
-          const userImg = supabase.storage
-            .from("Profiles")
-            .getPublicUrl(mess.user.profileImageUrl!);
-
-          debugger;
-          users.push({
-            user: mess.user,
-            profileImage: userImg.data.publicUrl,
-            chatId: mess.chatroomId,
-            // lastMessage: chat.mes
-          });
-        }
+        user.profileImage = userImg.data.publicUrl;
       });
-      const lastMessage = chat.messages[chat.messages.length - 1].text;
 
-      return {
-        chatId: chat.messages.chatroomId,
-        user: chat.messages.user,
-      };
+      chat.lastMessage = chat.messages[chat.messages.length - 1].text;
     });
   }
 
-  const joinChatroom = (chats, user: User) => {
-    const chat = chats.filter((chat) => chat.id == user.chatId)[0];
+  const joinChatroom = (chat) => {
     console.log(chat);
     socket.timeout(500).emit("join chat", chat);
     setSelectedChat(chat);
@@ -65,13 +47,15 @@ function Chatrooms({ chats }) {
   // TODO: Base the mapping here off of the chats array, take the users array per chat and filter out the current user. List the chatrooms using that array, and point to their names
   return (
     <div className={chatrooms.rooms}>
-      {users.map((user) => (
-        <li
-          className={chatrooms.chat}
-          onClick={() => joinChatroom(chats, user)}
-        >
-          <img src={user.profileImage} />
-          <p>{user.user.name}</p>
+      {chats.map((chat) => (
+        <li className={chatrooms.chat} onClick={() => joinChatroom(chat)}>
+          <img
+            src={
+              chat.users.filter((user) => user.email != email)[0].profileImage
+            }
+          />
+          <p>{chat.users.filter((user) => user.email != email)[0].name}</p>
+          <p>{chat.lastMessage}</p>
         </li>
       ))}
     </div>

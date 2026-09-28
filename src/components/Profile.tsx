@@ -14,7 +14,7 @@ function Profile({ user }) {
     setFile(e.target.files[0]);
     const { data, error } = await supabase.storage
       .from("Profiles")
-      .remove([`${email}/${user.user.profileImageUrl}`]);
+      .remove([`${email}/${user.profileImageUrl}`]);
 
     error ? console.log("Err" + error) : console.log("Data" + data);
 
@@ -33,7 +33,7 @@ function Profile({ user }) {
   };
   const userImg = supabase.storage
     .from("Profiles")
-    .getPublicUrl(email + "/" + user.user.profileImageUrl!);
+    .getPublicUrl(email + "/" + user.profileImageUrl!);
 
   return (
     <div>

@@ -82,8 +82,7 @@ function Home() {
   });
 
   const email = localStorage.getItem("messaging_app_email");
-  const user =
-    data && data[0].messages.find((mess) => mess.user.email == email);
+  const user = data && data[0].users.find((user) => user.email == email);
 
   return (
     <>
