@@ -14,7 +14,7 @@
 }
 
 body {
-  background-color: oklch(0.1686 0 0);
+  /* background-color: oklch(0.1686 0 0); */
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }

@@ -32,7 +32,6 @@ function Chatrooms({ chats }) {
   }
 
   const joinChatroom = (chat) => {
-    console.log(chat);
     socket.timeout(500).emit("join chat", chat);
     setSelectedChat(chat);
   };

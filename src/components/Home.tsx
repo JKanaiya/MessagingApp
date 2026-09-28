@@ -82,7 +82,8 @@ function Home() {
   });
 
   const email = localStorage.getItem("messaging_app_email");
-  const user = data && data[0].users.find((user) => user.email == email);
+  const user =
+    Array.isArray(data) && data[0].users.find((user) => user.email == email);
 
   return (
     <>
@@ -90,12 +91,17 @@ function Home() {
         <div className={home.home}>
           {!loading && <Chatrooms chats={data} />}
           <button onClick={() => setProfileOpen(!profileOpen)}>Profile</button>
-          {selectedChat && (
+          {
             <Chat
-              data={data.filter((chat) => chat.id == selectedChat.id)[0]}
+              data={
+                selectedChat
+                  ? data.filter((chat) => chat.id == selectedChat.id)[0]
+                  : data
+              }
               mutate={mutate}
+              selectedChat={selectedChat}
             />
-          )}
+          }
           {profileOpen && <Profile user={user} />}
         </div>
       )}

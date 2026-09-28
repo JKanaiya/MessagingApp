@@ -1,0 +1,21 @@
+.chat {
+  max-height: 10%;
+}
+.container {
+  width: 60%;
+  display: grid;
+  background-color: red;
+  align-content: center;
+  text-align: center;
+}
+.box {
+  background-color: purple;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  width: auto;
+}
+
+.heading {
+  font-family: "Anton Sc", sans-serif;
+}

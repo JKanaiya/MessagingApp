@@ -1,6 +1,7 @@
 .rooms {
-  min-width: 50%;
+  width: 30%;
   display: flex;
+  background-color: green;
   row-gap: 20px;
   flex-direction: column;
 }
