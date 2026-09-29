@@ -43,6 +43,7 @@ function App() {
   // }, [isLoggedIn]);
 
   const [email, setEmail] = useState<string | null>(null);
+  // const [userId, setUserId] = useState<number | null>(null);
 
   useEffect(() => {
     const email = localStorage.getItem("messaging_app_email");

@@ -1,0 +1,14 @@
+/* background: linear-gradient(90deg, white 15%,#bd6430 70%, white 15%) fixed; */
+
+.borderBottomLeft {
+  border-bottom-left-radius: 20px;
+}
+.borderBottomRight {
+  border-bottom-right-radius: 20px;
+}
+.borderTopLeft {
+  border-top-left-radius: 20px;
+}
+.borderTopRight {
+  border-top-right-radius: 20px;
+}

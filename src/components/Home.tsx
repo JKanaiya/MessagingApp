@@ -98,6 +98,7 @@ function Home() {
                   ? data.filter((chat) => chat.id == selectedChat.id)[0]
                   : data
               }
+              user={user}
               mutate={mutate}
               selectedChat={selectedChat}
             />

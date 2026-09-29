@@ -1,0 +1,85 @@
+import TextBorder from "./TextBorder";
+
+function TextBox({ message, selectedChat, user }) {
+  const messMatch = selectedChat.messages.find((mess) => mess.id == message.id);
+  const messIndex = selectedChat.messages.indexOf(messMatch);
+  const alignment = user.id == message.userId ? "end" : "start";
+
+  const priorMessage = selectedChat.messages[messIndex - 1];
+  if (
+    priorMessage != undefined &&
+    priorMessage.userId == message.userId &&
+    compareDates30mins(priorMessage.timeSent, message.timeSent)
+  ) {
+    message.topBorder = false;
+  } else {
+    message.topBorder = true;
+  }
+  if (!selectedChat.messages.length <= messIndex + 2) {
+    const latterMessage = selectedChat.messages[messIndex + 1];
+    if (latterMessage == undefined) {
+      message.bottomBorder = true;
+    } else {
+      if (
+        latterMessage.userId == message.userId &&
+        compareDates30mins(latterMessage.timeSent, message.timeSent)
+      ) {
+        message.bottomBorder = false;
+      } else {
+        message.bottomBorder = true;
+      }
+    }
+  }
+
+  return (
+    <div
+      style={{
+        alignSelf: alignment,
+        width: "max(auto, 40%)",
+        textAlign: "center",
+        textWrap: "pretty",
+        display: "flex",
+        maxWidth: "70dvw",
+        flexDirection: "column",
+        background:
+          alignment == "start"
+            ? "linear-gradient(90deg,  red 70%, purple 15%) "
+            : "linear-gradient(90deg,  purple 15%, red 70%) ",
+      }}
+    >
+      {message.topBorder && (
+        <TextBorder alignment={alignment} position={"top"} />
+      )}
+      <div
+        style={{
+          padding: "3%",
+          paddingLeft: "5%",
+          backgroundColor: "red",
+          borderRadius: "9px",
+          minWidth: "9dvw",
+          textWrap: "wrap",
+          maxWidth: "40dvw",
+        }}
+      >
+        <p>{message.text}</p>
+      </div>
+      {message.bottomBorder && (
+        <TextBorder
+          alignment={alignment}
+          position={"bottom"}
+          timeSent={message.timeSent}
+        />
+      )}
+    </div>
+  );
+}
+
+export default TextBox;
+
+const compareDates30mins = (a: string, b: string) => {
+  const dateA = new Date(a);
+  const dateB = new Date(b);
+  // date differential in minutes
+  const diff = Math.abs(dateA - dateB) / 60 / 1000;
+  return diff <= 30 ? true : false;
+};

@@ -1,9 +1,11 @@
 import ApiCall from "../apiCalls.ts";
+
 import chat from "../styles/chat.module.css";
 import { socket } from "../socket.ts";
 import { useState, useEffect, useReducer } from "react";
+import TextBox from "./TextBox.tsx";
 
-function Chat({ data, mutate, selectedChat }) {
+function Chat({ data, mutate, selectedChat, user }) {
   const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,7 +37,10 @@ function Chat({ data, mutate, selectedChat }) {
     <div className={chat.container}>
       {selectedChat ? (
         <div className={chat.box}>
-          {data && data.messages.map((mess) => <p>{mess.text}</p>)}
+          {data &&
+            data.messages.map((mess) => (
+              <TextBox message={mess} selectedChat={selectedChat} user={user} />
+            ))}
           <form onSubmit={onSubmit}>
             <input onChange={(e) => setValue(e.target.value)} />
 
