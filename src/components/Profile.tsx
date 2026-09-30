@@ -3,7 +3,7 @@ import ApiCall from "../apiCalls.ts";
 import { supabase } from "../supabase.ts";
 import type { User } from "./Home.tsx";
 
-function Profile({ user }) {
+function Profile({ user }: { user: User }) {
   const [file, setFile] = useState<null | File>(null);
   const email = localStorage.getItem("messaging_app_email");
 

@@ -14,7 +14,7 @@ function TextBorder({
 }: {
   alignment: string;
   position: string;
-  timeSent: string | null;
+  timeSent: undefined | string;
 }) {
   const timeDateSent = new Date(timeSent);
 
@@ -36,7 +36,7 @@ function TextBorder({
 
   const borderStyle = {
     borderRadius: bradius(),
-    backgroundColor: "purple",
+    backgroundColor: "green",
     display: "block",
     height: "20px",
   };

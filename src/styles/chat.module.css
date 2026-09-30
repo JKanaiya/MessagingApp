@@ -1,6 +1,53 @@
+.panel {
+  padding: 2%;
+  border-radius: 12px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  height: 90dvh;
+  max-height: 90dvh;
+  width: auto;
+  justify-content: space-between;
+}
+
 .chat {
   max-height: 10%;
 }
+
+.convo {
+  display: flex;
+  border-radius: 12px 12px 0 0;
+  background-color: green;
+  position: relative;
+  justify-content: center;
+  display: flex;
+  /* padding: 0 5%; */
+}
+
+.convo h4 {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  column-gap: 10px;
+  background-color: #fff;
+  border-radius: 0 0 12px 12px;
+  padding: 1.5%;
+}
+
+.convo button {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.input {
+  min-width: 80%;
+  padding-left: 4%;
+  border-radius: 12px;
+  border: none;
+  height: 50px;
+}
+
 .container {
   width: 60%;
   display: grid;
@@ -8,12 +55,36 @@
   align-content: center;
   text-align: center;
 }
+
 .box {
-  background-color: purple;
+  scrollbar-width: none;
+  background-color: green;
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
+  height: 95%;
+  overflow: scroll;
   width: auto;
+}
+
+.panel button {
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  place-content: center;
+  place-items: center;
+}
+
+.panel button > svg {
+  height: 20px;
+  width: 20px;
+}
+
+.form {
+  display: flex;
+  background-color: green;
+  border-radius: 0 0 12px 12px;
+  justify-content: space-around;
 }
 
 .heading {

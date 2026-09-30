@@ -4,7 +4,6 @@ import useSWR from "swr";
 import home from "../styles/home.module.css";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../AuthContext";
-import Profile from "./Profile.tsx";
 import Chatrooms from "./Chatrooms.tsx";
 import SelectionContext from "../SelectionContext.tsx";
 import { socket } from "../socket.ts";
@@ -14,6 +13,7 @@ export type User = {
   id: number;
   name: string;
   profileImageUrl: string;
+  profileImage: string | undefined;
   lastMessage: string | undefined;
 };
 
@@ -28,9 +28,11 @@ export type Message = {
   user: User;
   chatroomId: number;
   text: string;
-  timeSent: Date;
-  timeUpdated: Date | null;
+  timeSent: string;
+  timeUpdated: string | null;
   userId: number;
+  topBorder: boolean | undefined;
+  bottomBorder: boolean | undefined;
 };
 
 function Home() {
@@ -83,27 +85,22 @@ function Home() {
 
   const email = localStorage.getItem("messaging_app_email");
   const user =
-    Array.isArray(data) && data[0].users.find((user) => user.email == email);
+    Array.isArray(data) &&
+    data[0].users.find((user: User) => user.email == email);
 
   return (
     <>
       {data && (
         <div className={home.home}>
-          {!loading && <Chatrooms chats={data} />}
-          <button onClick={() => setProfileOpen(!profileOpen)}>Profile</button>
-          {
-            <Chat
-              data={
-                selectedChat
-                  ? data.filter((chat) => chat.id == selectedChat.id)[0]
-                  : data
-              }
+          {!loading && (
+            <Chatrooms
+              chats={data}
               user={user}
-              mutate={mutate}
-              selectedChat={selectedChat}
+              profileOpen={profileOpen}
+              setProfileOpen={setProfileOpen}
             />
-          }
-          {profileOpen && <Profile user={user} />}
+          )}
+          {<Chat user={user} mutate={mutate} selectedChat={selectedChat} />}
         </div>
       )}
     </>

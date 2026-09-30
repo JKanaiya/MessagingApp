@@ -1,6 +1,17 @@
+import type { User } from "@supabase/supabase-js";
+import type { Message } from "./Home";
 import TextBorder from "./TextBorder";
+import type { Chat } from "./Chat";
 
-function TextBox({ message, selectedChat, user }) {
+function TextBox({
+  message,
+  selectedChat,
+  user,
+}: {
+  message: Message;
+  selectedChat: Chat;
+  user: User;
+}) {
   const messMatch = selectedChat.messages.find((mess) => mess.id == message.id);
   const messIndex = selectedChat.messages.indexOf(messMatch);
   const alignment = user.id == message.userId ? "end" : "start";
@@ -15,7 +26,7 @@ function TextBox({ message, selectedChat, user }) {
   } else {
     message.topBorder = true;
   }
-  if (!selectedChat.messages.length <= messIndex + 2) {
+  if (selectedChat.messages.length > messIndex) {
     const latterMessage = selectedChat.messages[messIndex + 1];
     if (latterMessage == undefined) {
       message.bottomBorder = true;
@@ -43,8 +54,8 @@ function TextBox({ message, selectedChat, user }) {
         flexDirection: "column",
         background:
           alignment == "start"
-            ? "linear-gradient(90deg,  red 70%, purple 15%) "
-            : "linear-gradient(90deg,  purple 15%, red 70%) ",
+            ? "linear-gradient(90deg,  white 70%, green 15%) "
+            : "linear-gradient(90deg,  green 15%, white 70%) ",
       }}
     >
       {message.topBorder && (
@@ -54,7 +65,7 @@ function TextBox({ message, selectedChat, user }) {
         style={{
           padding: "3%",
           paddingLeft: "5%",
-          backgroundColor: "red",
+          backgroundColor: "white",
           borderRadius: "9px",
           minWidth: "9dvw",
           textWrap: "wrap",

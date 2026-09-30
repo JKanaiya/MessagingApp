@@ -115,7 +115,7 @@ const SignUp = () => {
     try {
       const response = await ApiCall.logIn(formData);
 
-      if (!response.status == 200) {
+      if (response.status != 200) {
         throw new Error(`HTTP Error! Status: ${response.status}`);
       }
 

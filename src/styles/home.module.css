@@ -1,4 +1,6 @@
 .home {
+  padding: 2%;
+  background-color: red;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

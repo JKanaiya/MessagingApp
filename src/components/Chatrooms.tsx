@@ -1,10 +1,12 @@
 import { useContext, useEffect } from "react";
+import Profile from "./Profile.tsx";
 import chatrooms from "../styles/chatrooms.module.css";
 import { supabase } from "../supabase.ts";
-import type { Message, Users, User } from "./Home";
+import type { Message, Users, User, UserProfileImages } from "./Home";
 import AuthContext from "../AuthContext";
 import SelectionContext from "../SelectionContext";
 import { socket } from "../socket";
+import type { Chat } from "./Chat.tsx";
 
 export type ChatRoom = {
   messages: Message[];
@@ -12,7 +14,18 @@ export type ChatRoom = {
   userid: number;
 };
 
-function Chatrooms({ chats }) {
+function Chatrooms({
+  chats,
+  user,
+  profileOpen,
+  setProfileOpen,
+}: {
+  chats: Chat[];
+  user: User;
+  profileOpen: boolean;
+  setProfileOpen: (arg0: boolean) => {};
+  setUserProfileImages: ([]) => {};
+}) {
   const email = localStorage.getItem("messaging_app_email");
   const { isLoggedIn } = useContext(AuthContext);
   const { setSelectedChat, selectedChat } = useContext(SelectionContext);
@@ -31,10 +44,14 @@ function Chatrooms({ chats }) {
     });
   }
 
-  const joinChatroom = (chat) => {
+  const joinChatroom = (chat: Chat) => {
     socket.timeout(500).emit("join chat", chat);
     setSelectedChat(chat);
   };
+
+  const userImg = supabase.storage
+    .from("Profiles")
+    .getPublicUrl(email + "/" + user.profileImageUrl!);
 
   useEffect(() => {
     socket.connect();
@@ -43,20 +60,30 @@ function Chatrooms({ chats }) {
     };
   }, [isLoggedIn]);
 
-  // TODO: Base the mapping here off of the chats array, take the users array per chat and filter out the current user. List the chatrooms using that array, and point to their names
   return (
-    <div className={chatrooms.rooms}>
-      {chats.map((chat) => (
-        <li className={chatrooms.chat} onClick={() => joinChatroom(chat)}>
-          <img
-            src={
-              chat.users.filter((user) => user.email != email)[0].profileImage
-            }
-          />
-          <p>{chat.users.filter((user) => user.email != email)[0].name}</p>
-          <p>{chat.lastMessage}</p>
-        </li>
-      ))}
+    <div className={chatrooms.panel}>
+      <div className={chatrooms.rooms}>
+        {chats.map((chat) => (
+          <li className={chatrooms.chat} onClick={() => joinChatroom(chat)}>
+            <img
+              src={
+                chat.users.filter((user) => user.email != email)[0].profileImage
+              }
+            />
+            <p>{chat.users.filter((user) => user.email != email)[0].name}</p>
+            <p>{chat.lastMessage}</p>
+          </li>
+        ))}
+      </div>
+      <div className={chatrooms.profileBar}>
+        <h4>{user.name}</h4>
+        <img
+          src={userImg.data.publicUrl}
+          className={chatrooms.profileImg}
+          onClick={() => setProfileOpen(!profileOpen)}
+        />
+      </div>
+      {profileOpen && <Profile user={user} />}
     </div>
   );
 }
