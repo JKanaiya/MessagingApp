@@ -1,4 +1,5 @@
 import axios from "axios";
+import { genSalt, hash } from "bcrypt-ts";
 
 const ApiCall = (function () {
   const api = axios.create({
@@ -33,6 +34,50 @@ const ApiCall = (function () {
         return err.response;
       });
     return result;
+  };
+
+  const spectatorSignUp = async function () {
+    const now = new Date();
+    const specEmail = `spec${now.getDay()}_${now.getMinutes()}`;
+
+    const salt = await genSalt(10);
+    const specPass = await hash(
+      `=specPass${now.getDay}_${now.getMinutes()}}=`,
+      salt,
+    );
+
+    localStorage.setItem("message_app_spec_email", specEmail);
+    localStorage.setItem("message_app_spec_pass", specPass);
+
+    const result = await api.post("sign-up", {
+      email: specEmail,
+      password: specPass,
+      passwordConfirm: specPass,
+      spectator: true,
+    });
+    return result;
+  };
+
+  const spectatorLogin = async function () {
+    const specEmail = localStorage.getItem("message_app_spec_email");
+    const specPass = localStorage.getItem("message_app_spec_pass");
+
+    if (specEmail && specPass) {
+      const result = await api
+        .post("log-in", {
+          email: specEmail,
+          password: specPass,
+        })
+        .catch(function (err) {
+          if (401 == err.response.status) {
+            console.log("error logging in" + err);
+          }
+          return err.response;
+        });
+      return result;
+    } else {
+      spectatorSignUp();
+    }
   };
 
   const logOut = function () {
@@ -84,6 +129,8 @@ const ApiCall = (function () {
     logOut,
     logIn,
     setProfileImage,
+    spectatorSignUp,
+    spectatorLogin,
   };
 })();
 
