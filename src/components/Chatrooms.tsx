@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import Profile from "./Profile.tsx";
 import chatrooms from "../styles/chatrooms.module.css";
 import { supabase } from "../supabase.ts";
@@ -7,6 +7,7 @@ import AuthContext from "../AuthContext";
 import SelectionContext from "../SelectionContext";
 import { socket } from "../socket";
 import type { Chat } from "./Chat.tsx";
+import ApiCall from "../apiCalls.ts";
 
 export type ChatRoom = {
   messages: Message[];
@@ -16,19 +17,25 @@ export type ChatRoom = {
 
 function Chatrooms({
   chats,
+  mutate,
   user,
+  users,
   profileOpen,
   setProfileOpen,
 }: {
   chats: Chat[];
   user: User;
+  mutate: () => {};
+  users: User[];
   profileOpen: boolean;
   setProfileOpen: (arg0: boolean) => {};
   setUserProfileImages: ([]) => {};
 }) {
   const email = localStorage.getItem("messaging_app_email");
+  const specEmail = localStorage.getItem("messaging_app_spec_email");
   const { isLoggedIn } = useContext(AuthContext);
   const { setSelectedChat, selectedChat } = useContext(SelectionContext);
+  const [userListOpen, setUserListOpen] = useState(false);
 
   if (chats != undefined) {
     chats.forEach((chat) => {
@@ -40,14 +47,33 @@ function Chatrooms({
         user.profileImage = userImg.data.publicUrl;
       });
 
-      chat.lastMessage = chat.messages[chat.messages.length - 1].text;
+      chat.lastMessage =
+        chat.messages.length != 0
+          ? chat.messages[chat.messages.length - 1].text
+          : "";
     });
   }
+
+  const chatWithUser = async (user2: User) => {
+    try {
+      const response = await ApiCall.createChatroom(user2);
+
+      if (response.status != 200) {
+        throw new Error(`HTTP Error! Status: ${response.status}`);
+      } else {
+        mutate();
+      }
+    } catch (e) {
+      console.log(`Error creating chatroom: ${e}`);
+    }
+  };
 
   const joinChatroom = (chat: Chat) => {
     socket.timeout(500).emit("join chat", chat);
     setSelectedChat(chat);
   };
+
+  // Return earlier in the case of loading
 
   const userImg = supabase.storage
     .from("Profiles")
@@ -75,6 +101,15 @@ function Chatrooms({
           </li>
         ))}
       </div>
+      <button onClick={() => setUserListOpen(!userListOpen)}>Find User</button>
+      {userListOpen &&
+        users.map(
+          (user: User) =>
+            user.email != email &&
+            user.email != specEmail && (
+              <li onClick={() => chatWithUser(user)}>{user.email}</li>
+            ),
+        )}
       <div className={chatrooms.profileBar}>
         <h4>{user.name}</h4>
         <img

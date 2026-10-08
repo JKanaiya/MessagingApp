@@ -2,23 +2,17 @@
 import SignUp from "./components/SignUp";
 import Login from "./components/Login";
 import Auth from "./components/Auth.tsx";
-import { socket } from "./socket";
-import { Children, useEffect, useState } from "react";
-import router from "./routes.jsx";
+import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
 import Home from "./components/Home";
 import AuthContext from "./AuthContext";
-import {
-  RouterProvider,
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
 import "./styles/reset.css";
 import ApiCall from "./apiCalls.js";
 import type { ChatRoom } from "./components/Chatrooms.js";
 import SelectionContext from "./SelectionContext.js";
 import ErrorPage from "./components/ErrorPage.js";
+import axios from "axios";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -47,15 +41,44 @@ function App() {
 
   useEffect(() => {
     const email = localStorage.getItem("messaging_app_email");
-    if (email) {
+    const specEmail = localStorage.getItem("messaging_app_spec_email");
+    if (specEmail) {
+    } else {
       login(email);
     }
-  }, []);
+  }, [isLoggedIn]);
+
+  const authCheck = async function () {
+    const token = localStorage.getItem("token");
+    // const result = fetch(import.meta.env.VITE_BACKEND_URL + "auth-check", {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // })
+    //   .then((res) => {
+    //     console.log(res);
+    //     return res.json();
+    //   })
+    //   .then((data) => {
+    //     console.log(data);
+    //     return data;
+    //   })
+    //   .catch((err) => console.error(err));
+    const result = await axios
+      .get("auth-check", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .catch(function (err) {
+        return err.response;
+      });
+    return result;
+  };
 
   const login = async (email: string) => {
-    const res = await ApiCall.authCheck();
-    console.log(res);
-    if (res.status == 200) {
+    const res = await authCheck();
+    if (res.status == 200 || res == "authed") {
       setEmail(email);
       setIsLoggedIn(true);
     } else {
@@ -67,9 +90,7 @@ function App() {
 
   const logout = () => {
     setIsLoggedIn(false);
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    localStorage.removeItem("messaging_app_email");
+    localStorage.clear();
     setEmail(null);
   };
 
@@ -83,6 +104,7 @@ function App() {
               element={
                 isLoggedIn ? <Home /> : <Navigate replace to={"/auth/log-in"} />
               }
+              errorElement=<ErrorPage />
             />
             <Route path="auth" element=<Auth /> errorElement=<ErrorPage />>
               <Route

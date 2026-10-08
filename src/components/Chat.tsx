@@ -35,7 +35,9 @@ function Chat({
   const email = localStorage.getItem("messaging_app_email");
 
   if (selectedChat) {
-    filtered = selectedChat.users.filter((user) => user.email != email);
+    filtered = selectedChat.users.filter(
+      (user) => user.email != email && user.spectator != true,
+    );
 
     filtered.map((user: User) => {
       const userImg = supabase.storage
@@ -95,25 +97,29 @@ function Chat({
               <TextBox message={mess} selectedChat={selectedChat} user={user} />
             ))}
           </div>
-          <form onSubmit={onSubmit} className={chat.form}>
-            <input
-              onChange={(e) => setValue(e.target.value)}
-              className={chat.input}
-            />
+          {!user.spectator ? (
+            <form onSubmit={onSubmit} className={chat.form}>
+              <input
+                onChange={(e) => setValue(e.target.value)}
+                className={chat.input}
+              />
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              style={{
-                transform: "translate(24px, 0)",
-                color: "black",
-                borderRadius: "50% 0 0 50%",
-                backgroundColor: "white",
-              }}
-            >
-              <RiSendPlane2Line />
-            </button>
-          </form>
+              <button
+                type="submit"
+                disabled={isLoading}
+                style={{
+                  transform: "translate(24px, 0)",
+                  color: "black",
+                  borderRadius: "50% 0 0 50%",
+                  backgroundColor: "white",
+                }}
+              >
+                <RiSendPlane2Line />
+              </button>
+            </form>
+          ) : (
+            <h3>Spectating</h3>
+          )}
         </div>
       ) : (
         <h1 className={chat.heading}>Select a Chat</h1>

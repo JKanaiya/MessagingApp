@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router";
+import AuthContext from "../AuthContext.tsx";
 import ApiCall from "../apiCalls.ts";
 import { supabase } from "../supabase.ts";
 import type { User } from "./Home.tsx";
@@ -6,6 +8,14 @@ import type { User } from "./Home.tsx";
 function Profile({ user }: { user: User }) {
   const [file, setFile] = useState<null | File>(null);
   const email = localStorage.getItem("messaging_app_email");
+
+  const nav = useNavigate();
+  const { logout } = useContext(AuthContext);
+
+  const logOut = () => {
+    logout();
+    nav("/");
+  };
 
   const handleChange = async (e) => {
     const now = new Date();
@@ -39,6 +49,7 @@ function Profile({ user }: { user: User }) {
     <div>
       <img src={userImg.data.publicUrl} />
       <input type="file" name="uplaoded_file" onChange={handleChange} />
+      <button onClick={logOut}>LogOut</button>
     </div>
   );
 }

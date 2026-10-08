@@ -8,6 +8,7 @@ import icons from "../styles/icons.module.css";
 import { IoCloseOutline } from "react-icons/io5";
 import { Link } from "react-router";
 import Validate from "../components/Validate.ts";
+import GuestLogin from "./GuestLogin.tsx";
 
 export type Errors = {
   email: string;
@@ -99,7 +100,7 @@ const Login = () => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("messaging_app_email", formData.get("email"));
 
-      login(formData.get("email"));
+      await login(formData.get("email"));
       nav("/");
     } catch (e) {
       console.log(`Error signing up: ${e}`);
@@ -151,6 +152,7 @@ const Login = () => {
         <Link className={icons.authCloseIcon} to="/auth/sign-up">
           Sign-Up
         </Link>
+        <GuestLogin />
       </div>
     </div>
   );

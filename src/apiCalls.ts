@@ -1,3 +1,4 @@
+import type { User } from "@supabase/supabase-js";
 import axios from "axios";
 import { genSalt, hash } from "bcrypt-ts";
 
@@ -38,46 +39,46 @@ const ApiCall = (function () {
 
   const spectatorSignUp = async function () {
     const now = new Date();
-    const specEmail = `spec${now.getDay()}_${now.getMinutes()}`;
+    const specEmail = `spec${Math.floor(Math.random() * 1000)}_${Math.floor(Math.random() * 1000)}_${now.getMinutes()}@fakemail.com`;
 
-    const salt = await genSalt(10);
-    const specPass = await hash(
-      `=specPass${now.getDay}_${now.getMinutes()}}=`,
-      salt,
-    );
+    const specPass = `=specPass${now.getDay()}_${now.getMinutes()}=`;
 
-    localStorage.setItem("message_app_spec_email", specEmail);
-    localStorage.setItem("message_app_spec_pass", specPass);
+    localStorage.setItem("messaging_app_spec_email", specEmail);
+    localStorage.setItem("messaging_app_spec_pass", specPass);
 
-    const result = await api.post("sign-up", {
-      email: specEmail,
-      password: specPass,
-      passwordConfirm: specPass,
-      spectator: true,
-    });
-    return result;
+    try {
+      const result = await api.post("sign-up", {
+        email: specEmail,
+        password: specPass,
+        passwordConfirm: specPass,
+        spectator: true,
+      });
+      console.log(result);
+      return result;
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const spectatorLogin = async function () {
-    const specEmail = localStorage.getItem("message_app_spec_email");
-    const specPass = localStorage.getItem("message_app_spec_pass");
+    const specEmail = localStorage.getItem("messaging_app_spec_email");
+    const specPass = localStorage.getItem("messaging_app_spec_pass");
 
-    if (specEmail && specPass) {
-      const result = await api
-        .post("log-in", {
-          email: specEmail,
-          password: specPass,
-        })
-        .catch(function (err) {
-          if (401 == err.response.status) {
-            console.log("error logging in" + err);
-          }
-          return err.response;
-        });
-      return result;
-    } else {
-      spectatorSignUp();
-    }
+    const result = await api
+      .post("log-in", {
+        email: specEmail,
+        password: specPass,
+        passwordConfirm: specPass,
+      })
+      .catch(function (err) {
+        if (401 == err.response.status) {
+          console.log("error logging in" + err);
+        }
+        return err.response;
+      });
+    localStorage.setItem("token", result.data.token);
+
+    return result;
   };
 
   const logOut = function () {
@@ -92,7 +93,7 @@ const ApiCall = (function () {
       })
       .catch(function (err) {
         if (401 == err.response.status) {
-          console.log("bla");
+          console.log("Unauthorized");
         }
         return err.response;
       });
@@ -117,11 +118,54 @@ const ApiCall = (function () {
   };
 
   const authCheck = async function () {
-    const result = await api.post("auth-check").catch(function (err) {
-      return err.response;
-    });
+    const token = localStorage.getItem("token");
+    const headers = { Authorization: `Bearer ${token}` };
+
+    const result = fetch(import.meta.env.VITE_BACKEND_URL + "auth-check", {
+      method: "GET",
+      headers,
+    })
+      .then((res) => {
+        console.log(res);
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        return data;
+      })
+      .catch((err) => console.error(err));
+    console.log(result);
     return result;
   };
+
+  const getUsers = async function () {
+    const result = await api.get("users").catch(function (err) {
+      return err.response;
+    });
+    return result.data;
+  };
+
+  const createChatroom = async function (user2: User) {
+    console.log(user2);
+    const result = await api
+      .post("chatroom", {
+        user2Email: user2.email,
+      })
+      .catch(function (err) {
+        return err.response;
+      });
+    return result;
+  };
+
+  // const chats = await axios
+  //   .get(url + "chatrooms", config)
+  //   .catch(function (err) {
+  //     if (401 == err.response.status) {
+  //       console.log("bla");
+  //     }
+  //     return err.response;
+  //   });
+  // return chats.data;
 
   return {
     signUp,
@@ -131,6 +175,8 @@ const ApiCall = (function () {
     setProfileImage,
     spectatorSignUp,
     spectatorLogin,
+    getUsers,
+    createChatroom,
   };
 })();
 

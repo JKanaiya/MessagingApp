@@ -8,6 +8,7 @@ import icons from "../styles/icons.module.css";
 import { IoCloseOutline } from "react-icons/io5";
 import { Link } from "react-router";
 import Validate from "../components/Validate.ts";
+import GuestLogin from "./GuestLogin.tsx";
 
 type Errors = {
   email: string;
@@ -190,6 +191,7 @@ const SignUp = () => {
         <Link className={icons.authCloseIcon} to="/auth/log-in">
           Log-In
         </Link>
+        <GuestLogin />
       </div>
     </div>
   );
