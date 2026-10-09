@@ -1,6 +1,5 @@
 import type { User } from "@supabase/supabase-js";
 import axios from "axios";
-import { genSalt, hash } from "bcrypt-ts";
 
 const ApiCall = (function () {
   const api = axios.create({
@@ -53,7 +52,6 @@ const ApiCall = (function () {
         passwordConfirm: specPass,
         spectator: true,
       });
-      console.log(result);
       return result;
     } catch (err) {
       console.log(err);
@@ -100,10 +98,6 @@ const ApiCall = (function () {
     return result;
   };
 
-  // const sendMessage = async function(formData: FormData) {
-  //   const result = await.api.post("message", {})
-  // }
-
   const setProfileImage = async function (piUrl: string) {
     const email = localStorage.getItem("messaging_app_email");
     const result = await api
@@ -125,16 +119,9 @@ const ApiCall = (function () {
       method: "GET",
       headers,
     })
-      .then((res) => {
-        console.log(res);
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-        return data;
-      })
+      .then((res) => res.json())
+      .then((data) => data)
       .catch((err) => console.error(err));
-    console.log(result);
     return result;
   };
 
@@ -146,7 +133,6 @@ const ApiCall = (function () {
   };
 
   const createChatroom = async function (user2: User) {
-    console.log(user2);
     const result = await api
       .post("chatroom", {
         user2Email: user2.email,
@@ -156,16 +142,6 @@ const ApiCall = (function () {
       });
     return result;
   };
-
-  // const chats = await axios
-  //   .get(url + "chatrooms", config)
-  //   .catch(function (err) {
-  //     if (401 == err.response.status) {
-  //       console.log("bla");
-  //     }
-  //     return err.response;
-  //   });
-  // return chats.data;
 
   return {
     signUp,

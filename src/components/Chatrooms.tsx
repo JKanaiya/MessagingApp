@@ -1,8 +1,11 @@
 import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import useSWR from "swr";
+import UserContext from "../UserContext.tsx";
 import Profile from "./Profile.tsx";
 import chatrooms from "../styles/chatrooms.module.css";
 import { supabase } from "../supabase.ts";
-import type { Message, Users, User, UserProfileImages } from "./Home";
+import type { Message, User } from "./Home";
 import AuthContext from "../AuthContext";
 import SelectionContext from "../SelectionContext";
 import { socket } from "../socket";
@@ -17,25 +20,45 @@ export type ChatRoom = {
 
 function Chatrooms({
   chats,
-  mutate,
-  user,
-  users,
   profileOpen,
-  setProfileOpen,
+  toggleProfileOpen,
 }: {
   chats: Chat[];
-  user: User;
-  mutate: () => {};
-  users: User[];
   profileOpen: boolean;
-  setProfileOpen: (arg0: boolean) => {};
-  setUserProfileImages: ([]) => {};
+  toggleProfileOpen: () => void;
 }) {
+  // in the case of a specatator, they would be added to the relevant spectating chatrooms. In those, the new spectator ( == user), would be appended to the subusers array
+  // within the spectating chatroom, hopefully causing a mutate? should be more straightforward given the swr data is in this component
+  const { isLoggedIn } = useContext(AuthContext);
+  const { user } = useContext(UserContext);
+  const { setSelectedChat } = useContext(SelectionContext);
+  const [userListOpen, setUserListOpen] = useState(false);
+
   const email = localStorage.getItem("messaging_app_email");
   const specEmail = localStorage.getItem("messaging_app_spec_email");
-  const { isLoggedIn } = useContext(AuthContext);
-  const { setSelectedChat, selectedChat } = useContext(SelectionContext);
-  const [userListOpen, setUserListOpen] = useState(false);
+  const token = localStorage.getItem("token");
+  // TODO: Socket listener for new user added to the users list. mutate users on newUser listener
+
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+
+  const getUsers = async (url: string) => {
+    const chats = await axios.get(url, config).catch(function (err) {
+      if (401 == err.response.status) {
+        console.error("Unauthorized");
+      }
+      return err.response;
+    });
+    return chats.data;
+  };
+
+  const {
+    data: users,
+    error,
+    mutate,
+    isLoading: loading,
+  } = useSWR(import.meta.env.VITE_BACKEND_URL + "users", getUsers);
 
   if (chats != undefined) {
     chats.forEach((chat) => {
@@ -61,7 +84,7 @@ function Chatrooms({
       if (response.status != 200) {
         throw new Error(`HTTP Error! Status: ${response.status}`);
       } else {
-        mutate();
+        mutate(import.meta.env.VITE_BACKEND_URL + "chatrooms", true);
       }
     } catch (e) {
       console.log(`Error creating chatroom: ${e}`);
@@ -77,7 +100,7 @@ function Chatrooms({
 
   const userImg = supabase.storage
     .from("Profiles")
-    .getPublicUrl(email + "/" + user.profileImageUrl!);
+    .getPublicUrl(email + "/" + user?.profileImageUrl!);
 
   useEffect(() => {
     socket.connect();
@@ -103,6 +126,7 @@ function Chatrooms({
       </div>
       <button onClick={() => setUserListOpen(!userListOpen)}>Find User</button>
       {userListOpen &&
+        !loading &&
         users.map(
           (user: User) =>
             user.email != email &&
@@ -111,14 +135,14 @@ function Chatrooms({
             ),
         )}
       <div className={chatrooms.profileBar}>
-        <h4>{user.name}</h4>
+        <h4>{user?.name}</h4>
         <img
           src={userImg.data.publicUrl}
           className={chatrooms.profileImg}
-          onClick={() => setProfileOpen(!profileOpen)}
+          onClick={() => toggleProfileOpen()}
         />
       </div>
-      {profileOpen && <Profile user={user} />}
+      {profileOpen && <Profile />}
     </div>
   );
 }

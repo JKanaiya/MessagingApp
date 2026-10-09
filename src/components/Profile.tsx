@@ -1,13 +1,14 @@
 import { useState, useContext } from "react";
+import UserContext from "../UserContext.tsx";
 import { useNavigate } from "react-router";
 import AuthContext from "../AuthContext.tsx";
 import ApiCall from "../apiCalls.ts";
 import { supabase } from "../supabase.ts";
-import type { User } from "./Home.tsx";
 
-function Profile({ user }: { user: User }) {
+function Profile() {
   const [file, setFile] = useState<null | File>(null);
   const email = localStorage.getItem("messaging_app_email");
+  const { user } = useContext(UserContext);
 
   const nav = useNavigate();
   const { logout } = useContext(AuthContext);

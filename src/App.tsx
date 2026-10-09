@@ -13,10 +13,13 @@ import type { ChatRoom } from "./components/Chatrooms.js";
 import SelectionContext from "./SelectionContext.js";
 import ErrorPage from "./components/ErrorPage.js";
 import axios from "axios";
+import UserContext from "./UserContext.tsx";
+import type { User } from "@supabase/supabase-js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [selectedChat, setSelectedChat] = useState<ChatRoom | null>();
+  const [user, setUser] = useState<User | null>(null);
 
   // useEffect(() => {
   //   function onConnect() {
@@ -47,6 +50,10 @@ function App() {
       login(email);
     }
   }, [isLoggedIn]);
+
+  const upsertUser = (user: User | null) => {
+    setUser(user);
+  };
 
   const authCheck = async function () {
     const token = localStorage.getItem("token");
@@ -91,35 +98,42 @@ function App() {
   const logout = () => {
     setIsLoggedIn(false);
     localStorage.clear();
+    upsertUser(null);
     setEmail(null);
   };
 
   return (
     <AuthContext value={{ isLoggedIn, email, login, logout }}>
       <SelectionContext value={{ selectedChat, setSelectedChat }}>
-        <Router>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                isLoggedIn ? <Home /> : <Navigate replace to={"/auth/log-in"} />
-              }
-              errorElement=<ErrorPage />
-            />
-            <Route path="auth" element=<Auth /> errorElement=<ErrorPage />>
+        <UserContext value={{ upsertUser, user }}>
+          <Router>
+            <Routes>
               <Route
-                path="sign-up"
-                element=<SignUp />
+                path="/"
+                element={
+                  isLoggedIn ? (
+                    <Home />
+                  ) : (
+                    <Navigate replace to={"/auth/log-in"} />
+                  )
+                }
                 errorElement=<ErrorPage />
               />
-              <Route
-                path="log-in"
-                element=<Login />
-                errorElement=<ErrorPage />
-              />
-            </Route>
-          </Routes>
-        </Router>
+              <Route path="auth" element=<Auth /> errorElement=<ErrorPage />>
+                <Route
+                  path="sign-up"
+                  element=<SignUp />
+                  errorElement=<ErrorPage />
+                />
+                <Route
+                  path="log-in"
+                  element=<Login />
+                  errorElement=<ErrorPage />
+                />
+              </Route>
+            </Routes>
+          </Router>
+        </UserContext>
       </SelectionContext>
     </AuthContext>
   );

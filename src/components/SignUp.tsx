@@ -1,4 +1,5 @@
 import { useRef, useState, useContext } from "react";
+import UserContext from "../UserContext.tsx";
 import ApiCall from "../apiCalls";
 import { useNavigate } from "react-router";
 import AuthContext from "../AuthContext";
@@ -9,6 +10,8 @@ import { IoCloseOutline } from "react-icons/io5";
 import { Link } from "react-router";
 import Validate from "../components/Validate.ts";
 import GuestLogin from "./GuestLogin.tsx";
+import { mutate } from "swr";
+import { socket } from "../socket.ts";
 
 type Errors = {
   email: string;
@@ -22,6 +25,8 @@ const SignUp = () => {
   const email = useRef("");
   const passMatch = useRef("");
   const { login } = useContext(AuthContext);
+
+  const { upsertUser } = useContext(UserContext);
 
   const [errors, setErrors] = useState<Errors>({
     email: "",
@@ -120,8 +125,13 @@ const SignUp = () => {
         throw new Error(`HTTP Error! Status: ${response.status}`);
       }
 
+      upsertUser(response.data.user);
+
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("email", formData.get("email").toString());
+
+      socket.timeout(2000).emit("user-added");
+      mutate(import.meta.env.VITE_BACKEND_URL + "users", true);
 
       login(formData.get("messaging_app_email"));
       nav("/");

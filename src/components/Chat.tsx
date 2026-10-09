@@ -1,4 +1,5 @@
 import SelectionContext from "../SelectionContext.tsx";
+import UserContext from "../UserContext.tsx";
 import chatrooms from "../styles/chatrooms.module.css";
 import { supabase } from "../supabase.ts";
 import { RiCloseFill } from "react-icons/ri";
@@ -21,16 +22,15 @@ export type Chat = {
 function Chat({
   mutate,
   selectedChat,
-  user,
 }: {
   selectedChat: Chat;
-  user: User;
   mutate: () => {};
 }) {
   const { setSelectedChat } = useContext(SelectionContext);
   const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   let filtered: User[] = [];
+  const { user } = useContext(UserContext);
 
   const email = localStorage.getItem("messaging_app_email");
 

@@ -9,6 +9,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { Link } from "react-router";
 import Validate from "../components/Validate.ts";
 import GuestLogin from "./GuestLogin.tsx";
+import UserContext from "../UserContext.tsx";
 
 export type Errors = {
   email: string;
@@ -20,6 +21,7 @@ export type Errors = {
 const Login = () => {
   const nav = useNavigate();
   const { login } = useContext(AuthContext);
+  const { upsertUser } = useContext(UserContext);
 
   const password = useRef("");
   const email = useRef("");
@@ -73,8 +75,6 @@ const Login = () => {
 
     const confirm = await ApiCall.logIn(formData);
 
-    console.log(confirm);
-
     if (confirm.data.errors) {
       confirm.data.errors.forEach((err) => {
         switch (err.path) {
@@ -96,6 +96,8 @@ const Login = () => {
       if (response.status != 200) {
         throw new Error(`HTTP Error! Status: ${response.status}`);
       }
+
+      upsertUser(response.data.user);
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("messaging_app_email", formData.get("email"));
