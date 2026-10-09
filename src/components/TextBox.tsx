@@ -14,22 +14,18 @@ function TextBox({
 }) {
   const messMatch = selectedChat.messages.find((mess) => mess.id == message.id);
   const messIndex = selectedChat.messages.indexOf(messMatch);
+  const specEmail = localStorage.getItem("messaging_app_spec_email");
+
   const mc = selectedChat.users.find(
     (mess) => mess.email == "bla1@fakemail.com",
   );
-  const alignment = mc
+  const alignment = specEmail
     ? mc.id == message.userId
       ? "end"
       : "start"
     : user.id == message.userId
       ? "end"
       : "start";
-
-  // TODO: Add condition here that checks if the current account is in the "spectators array".
-  // smth like, if (chat.users.find((specs) => specs.email == user.email && specs.spectator == true))
-  // alignment = mc.id == messsage.userId? "end" : "start"
-  // if so, compare the emails in the messages with the "mc" of the messages in the first 2 chatrooms
-  // if not, carry on with this logic
 
   const priorMessage = selectedChat.messages[messIndex - 1];
   if (
@@ -69,8 +65,8 @@ function TextBox({
         flexDirection: "column",
         background:
           alignment == "start"
-            ? "linear-gradient(90deg,  white 70%, green 15%) "
-            : "linear-gradient(90deg,  green 15%, white 70%) ",
+            ? "linear-gradient(90deg,  white 70%, oklch(0.4647 0.0171 254.7) 15%) "
+            : "linear-gradient(90deg,  oklch(0.4647 0.0171 254.7) 15%, white 70%) ",
       }}
     >
       {message.topBorder && (

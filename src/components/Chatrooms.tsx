@@ -119,8 +119,12 @@ function Chatrooms({
                 chat.users.filter((user) => user.email != email)[0].profileImage
               }
             />
-            <p>{chat.users.filter((user) => user.email != email)[0].name}</p>
-            <p>{chat.lastMessage}</p>
+            <div>
+              <p style={{ fontSize: "1.2rem" }}>
+                {chat.users.filter((user) => user.email != email)[0].name}
+              </p>
+              <p style={{ color: "oklch(0.9 0 0)" }}>{chat.lastMessage}</p>
+            </div>
           </li>
         ))}
       </div>

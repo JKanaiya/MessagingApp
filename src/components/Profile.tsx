@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import UserContext from "../UserContext.tsx";
+import profile from "../styles/profile.module.css";
 import { useNavigate } from "react-router";
 import AuthContext from "../AuthContext.tsx";
 import ApiCall from "../apiCalls.ts";
@@ -47,9 +48,16 @@ function Profile() {
     .getPublicUrl(email + "/" + user.profileImageUrl!);
 
   return (
-    <div>
-      <img src={userImg.data.publicUrl} />
-      <input type="file" name="uplaoded_file" onChange={handleChange} />
+    <div className={profile.container}>
+      <div className={profile.image}>
+        <img src={userImg.data.publicUrl} style={{ borderRadius: "50%" }} />
+        <input
+          type="file"
+          name="uplaoded_file"
+          onChange={handleChange}
+          placeholder=""
+        />
+      </div>
       <button onClick={logOut}>LogOut</button>
     </div>
   );

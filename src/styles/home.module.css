@@ -1,6 +1,13 @@
+@font-face {
+  font-family: "Libron";
+  src: local("Libron"), url(../../assets/fonts/Libron-Regular.woff2);
+}
 .home {
   padding: 2%;
-  background-color: red;
+  background-color: oklch(0.4647 0.0171 254.7);
+  font-family: arial;
+  background-image: url("/assets/images/pexels-finite-captures-1993313-10153646.jpg");
+  background-size: cover;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

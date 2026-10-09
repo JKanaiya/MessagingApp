@@ -36,7 +36,7 @@ function TextBorder({
 
   const borderStyle = {
     borderRadius: bradius(),
-    backgroundColor: "green",
+    backgroundColor: "oklch(0.4647 0.0171 254.7)",
     display: "block",
     height: "20px",
   };
