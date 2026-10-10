@@ -65,8 +65,8 @@ function TextBox({
         flexDirection: "column",
         background:
           alignment == "start"
-            ? "linear-gradient(90deg,  white 70%, oklch(0.4647 0.0171 254.7) 15%) "
-            : "linear-gradient(90deg,  oklch(0.4647 0.0171 254.7) 15%, white 70%) ",
+            ? "linear-gradient(90deg,  white 70%, oklch(0.1589 0.0785 12.71) 15%) "
+            : "linear-gradient(90deg,  oklch(0.1589 0.0785 12.71) 15%, white 70%) ",
       }}
     >
       {message.topBorder && (

@@ -17,7 +17,8 @@
 .convo {
   display: flex;
   border-radius: 12px 12px 0 0;
-  background-color: oklch(0.4647 0.0171 254.7);
+  background-image: url("../../assets/images/pexels-valentina-restrepo-rios-337634008-13981886.jpg");
+  background-size: cover;
   position: relative;
   justify-content: center;
   display: flex;
@@ -58,7 +59,9 @@
 
 .box {
   scrollbar-width: none;
-  background-color: oklch(0.4647 0.0171 254.7);
+  background-color: oklch(0.1487 0.0227 8.2);
+  background-image: url("../../assets/images/pexels-valentina-restrepo-rios-337634008-13981886.jpg");
+  background-size: cover;
   display: flex;
   flex-direction: column;
   height: 95%;
@@ -82,7 +85,8 @@
 
 .form {
   display: flex;
-  background-color: oklch(0.4647 0.0171 254.7);
+  background-image: url("/assets/images/pexels-valentina-restrepo-rios-337634008-13981886.jpg");
+  background-size: cover;
   border-radius: 0 0 12px 12px;
   justify-content: space-around;
 }

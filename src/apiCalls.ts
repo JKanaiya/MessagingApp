@@ -111,6 +111,17 @@ const ApiCall = (function () {
     return result;
   };
 
+  const updateUserName = async function (formData: FormData) {
+    const result = await api
+      .patch("name", {
+        newName: formData.get("newName"),
+      })
+      .catch(function (err) {
+        return err.response;
+      });
+    return result;
+  };
+
   const authCheck = async function () {
     const token = localStorage.getItem("token");
     const headers = { Authorization: `Bearer ${token}` };
@@ -153,6 +164,7 @@ const ApiCall = (function () {
     spectatorLogin,
     getUsers,
     createChatroom,
+    updateUserName,
   };
 })();
 

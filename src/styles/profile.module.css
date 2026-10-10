@@ -1,0 +1,74 @@
+.container {
+  min-width: 35dvw;
+  display: flex;
+  position: absolute;
+  border-radius: 20px;
+  bottom: 2%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 60dvh;
+  background-color: brown;
+}
+.container img {
+  height: 200px;
+  width: 200px;
+}
+
+.container label {
+  /* min-width: 100%; */
+  /* min-height: 100%; */
+  /* display: flex; */
+  /* place-content: center; */
+  /* align-items: center; */
+  /* border-radius: 50%; */
+  /* position: absolute; */
+  top: 30%;
+  right: 30%;
+}
+
+/* label svg { */
+/*   position: absolute; */
+/*   left: auto; */
+/*   top: auto; */
+/*   display: none; */
+/*   width: 40px; */
+/*   height: 40px; */
+/* } */
+
+.container img {
+  z-index: 3;
+}
+
+.editImage {
+  color: transparent;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-blend-mode: multiply;
+  background-position: center;
+  vertical-align: middle;
+  background-size: cover;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.editImage:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  color: #fff;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.editImage svg {
+  position: absolute;
+  left: auto;
+  top: auto;
+  height: 200px;
+  width: 200px;
+  display: inline-block;
+  padding-top: 4.5em;
+  padding-bottom: 4.5em;
+}

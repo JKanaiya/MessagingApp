@@ -36,8 +36,11 @@ function TextBorder({
 
   const borderStyle = {
     borderRadius: bradius(),
-    backgroundColor: "oklch(0.4647 0.0171 254.7)",
-    display: "block",
+    backgroundColor: "oklch(0.1487 0.0227 8.2)",
+    display: "flex",
+    justifyContent: alignment == "start" ? "start" : "end",
+    padding: "5px 20px",
+    color: "white",
     height: "20px",
   };
 
