@@ -1,4 +1,6 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { IoMdAddCircleOutline } from "react-icons/io";
 import axios from "axios";
 import useSWR from "swr";
 import UserContext from "../UserContext.tsx";
@@ -21,23 +23,31 @@ export type ChatRoom = {
 function Chatrooms({
   chats,
   profileOpen,
+  selectedChat,
   toggleProfileOpen,
 }: {
   chats: Chat[];
+  selectedChat: boolean | Chat;
   profileOpen: boolean;
   toggleProfileOpen: () => void;
 }) {
   // in the case of a specatator, they would be added to the relevant spectating chatrooms. In those, the new spectator ( == user), would be appended to the subusers array
   // within the spectating chatroom, hopefully causing a mutate? should be more straightforward given the swr data is in this component
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, logout } = useContext(AuthContext);
   const { user } = useContext(UserContext);
   const { setSelectedChat } = useContext(SelectionContext);
   const [userListOpen, setUserListOpen] = useState(false);
 
   const email = localStorage.getItem("messaging_app_email");
+  const nav = useNavigate();
   const specEmail = localStorage.getItem("messaging_app_spec_email");
   const token = localStorage.getItem("token");
   // TODO: Socket listener for new user added to the users list. mutate users on newUser listener
+
+  const logOut = () => {
+    logout();
+    nav("/");
+  };
 
   const config = {
     headers: { Authorization: `Bearer ${token}` },
@@ -77,6 +87,8 @@ function Chatrooms({
     });
   }
 
+  console.log(users);
+
   const chatWithUser = async (user2: User) => {
     try {
       const response = await ApiCall.createChatroom(user2);
@@ -108,9 +120,15 @@ function Chatrooms({
       socket.disconnect();
     };
   }, [isLoggedIn]);
+  console.log(window.innerWidth);
 
   return (
-    <div className={chatrooms.panel}>
+    <div
+      className={chatrooms.panel}
+      style={{
+        display: window.innerWidth < 800 && selectedChat ? "none" : "flex",
+      }}
+    >
       <div className={chatrooms.rooms}>
         {chats.map((chat) => (
           <li className={chatrooms.chat} onClick={() => joinChatroom(chat)}>
@@ -128,25 +146,47 @@ function Chatrooms({
           </li>
         ))}
       </div>
-      <button onClick={() => setUserListOpen(!userListOpen)}>Find User</button>
-      {userListOpen &&
-        !loading &&
-        users.map(
-          (user: User) =>
-            user.email != email &&
-            user.email != specEmail && (
-              <li onClick={() => chatWithUser(user)}>{user.email}</li>
-            ),
-        )}
+      <button
+        onClick={() => setUserListOpen(!userListOpen)}
+        className={chatrooms.addChatroom}
+      >
+        <IoMdAddCircleOutline />
+      </button>
+      {Array.isArray(users) && userListOpen && !loading && (
+        <div className={chatrooms.users}>
+          {users.map(
+            (user: User) =>
+              user.email != email &&
+              user.email != specEmail && (
+                <li onClick={() => chatWithUser(user)}>{user.email}</li>
+              ),
+          )}
+        </div>
+      )}
       <div className={chatrooms.profileBar}>
-        <h4>{user?.name}</h4>
-        <img
-          src={userImg.data.publicUrl}
-          className={chatrooms.profileImg}
-          onClick={() => toggleProfileOpen()}
-        />
+        <div>
+          <img
+            src={userImg.data.publicUrl}
+            className={chatrooms.profileImg}
+            onClick={() => toggleProfileOpen()}
+          />
+          <h4
+            style={{
+              color: "white",
+              maxWidth: "150px",
+              maxHeight: "20px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {user?.name}
+          </h4>
+        </div>
+        <button onClick={logOut} className={chatrooms.logout}>
+          LogOut
+        </button>
       </div>
-      {profileOpen && <Profile />}
+      {profileOpen && <Profile toggleProfileOpen={toggleProfileOpen} />}
     </div>
   );
 }

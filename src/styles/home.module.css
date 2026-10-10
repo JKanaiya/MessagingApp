@@ -6,7 +6,6 @@
   padding: 2%;
   background-color: oklch(0.4647 0.0171 254.7);
   font-family: arial;
-
   background-image: url("/assets/images/pexels-valentina-restrepo-rios-337634008-13981886.jpg");
 
   background-size: cover;
@@ -14,4 +13,12 @@
   flex-direction: row;
   justify-content: space-between;
   min-height: 100dvh;
+}
+
+@media screen and (max-width: 800px) {
+  .home {
+    padding: 1%;
+    align-items: center;
+    justify-content: center;
+  }
 }

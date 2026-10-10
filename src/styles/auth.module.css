@@ -61,6 +61,16 @@
   row-gap: 10px;
 }
 
+.altAuth {
+  position: absolute;
+  left: auto;
+  font-size: 1.3rem;
+  bottom: 6%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 @media screen and (max-width: 800px) {
   .background {
     justify-content: center;

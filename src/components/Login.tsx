@@ -4,8 +4,6 @@ import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import text from "../styles/text.module.css";
 import auth from "../styles/auth.module.css";
-import icons from "../styles/icons.module.css";
-import { IoCloseOutline } from "react-icons/io5";
 import { Link } from "react-router";
 import Validate from "../components/Validate.ts";
 import GuestLogin from "./GuestLogin.tsx";
@@ -112,9 +110,6 @@ const Login = () => {
   return (
     <div className={auth.background}>
       <div className={auth.authCard}>
-        <Link className={icons.authCloseIcon} to="/">
-          <IoCloseOutline />
-        </Link>
         <h1 className={text.headingTitle}>LOGIN</h1>
         <p className={text.italicText}>to continue your conversation</p>
         <form className={auth.form} action={attemptLogin}>
@@ -151,9 +146,15 @@ const Login = () => {
             Submit
           </button>
         </form>
-        <Link className={icons.authCloseIcon} to="/auth/sign-up">
-          Sign-Up
-        </Link>
+
+        <div className={auth.altAuth}>
+          <p style={{ color: "white", fontSize: "1rem", fontStyle: "italic" }}>
+            Dont have an account?
+          </p>
+          <Link to="/auth/sign-up" style={{ color: "white" }}>
+            Sign-Up
+          </Link>
+        </div>
         <GuestLogin />
       </div>
     </div>

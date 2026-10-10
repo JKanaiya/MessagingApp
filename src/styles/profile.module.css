@@ -1,15 +1,32 @@
 .container {
-  min-width: 35dvw;
+  min-width: 30dvw;
   display: flex;
   position: absolute;
   border-radius: 20px;
   bottom: 2%;
   flex-direction: column;
+  row-gap: 20px;
   justify-content: center;
   align-items: center;
-  min-height: 60dvh;
-  background-color: brown;
+  min-height: 50dvh;
+  background-color: oklch(0.3176 0.0789 266.53);
 }
+
+.container form {
+  display: flex;
+  align-items: center;
+  row-gap: 20px;
+  flex-direction: column;
+}
+
+.nameUpdate {
+  min-width: 100%;
+  padding: 2%;
+  border: none;
+  border-radius: 5px;
+  font-family: "Ubuntu", sans-serif;
+}
+
 .container img {
   height: 200px;
   width: 200px;
@@ -22,9 +39,6 @@
   /* place-content: center; */
   /* align-items: center; */
   /* border-radius: 50%; */
-  /* position: absolute; */
-  top: 30%;
-  right: 30%;
 }
 
 /* label svg { */
@@ -38,6 +52,19 @@
 
 .container img {
   z-index: 3;
+}
+
+.container > svg {
+  position: absolute;
+  color: gray;
+  top: 3%;
+  right: 3%;
+  height: 35px;
+  width: 35px;
+}
+
+.image {
+  display: flex;
 }
 
 .editImage {
@@ -62,7 +89,7 @@
   text-decoration: none;
 }
 
-.editImage svg {
+.editImage > svg {
   position: absolute;
   left: auto;
   top: auto;
@@ -71,4 +98,19 @@
   display: inline-block;
   padding-top: 4.5em;
   padding-bottom: 4.5em;
+}
+
+.editImage button {
+  min-width: 40px;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    min-width: 60dvw;
+  }
+
+  .editImage {
+    width: 150px;
+    height: 150px;
+  }
 }

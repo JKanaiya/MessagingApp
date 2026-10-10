@@ -38,6 +38,9 @@ function Chat({
     filtered = selectedChat.users.filter(
       (user) => user.email != email && user.spectator != true,
     );
+    if (filtered.length < 1) {
+      filtered = selectedChat.users;
+    }
 
     filtered.map((user: User) => {
       const userImg = supabase.storage
@@ -71,7 +74,12 @@ function Chat({
   }
 
   return (
-    <div className={chat.container}>
+    <div
+      className={chat.container}
+      style={{
+        display: window.innerWidth < 800 && !selectedChat ? "none" : "flex",
+      }}
+    >
       {selectedChat ? (
         <div className={chat.panel}>
           <div className={chat.convo}>
@@ -97,7 +105,7 @@ function Chat({
               <TextBox message={mess} selectedChat={selectedChat} user={user} />
             ))}
           </div>
-          {!user.spectator ? (
+          {!user.spectator || selectedChat.users.length <= 2 ? (
             <form onSubmit={onSubmit} className={chat.form}>
               <input
                 onChange={(e) => setValue(e.target.value)}
@@ -108,7 +116,7 @@ function Chat({
                 type="submit"
                 disabled={isLoading}
                 style={{
-                  transform: "translate(24px, 0)",
+                  // transform: "translate(24px, 0)",
                   color: "black",
                   borderRadius: "50% 0 0 50%",
                   backgroundColor: "white",

@@ -25,7 +25,11 @@ function GuestLogin() {
     }
   };
 
-  return <button onClick={guestLogin}>Guest Login</button>;
+  return (
+    <button onClick={guestLogin} style={{ borderRadius: "5px" }}>
+      Guest Login
+    </button>
+  );
 }
 
 export default GuestLogin;

@@ -57,20 +57,6 @@ function App() {
 
   const authCheck = async function () {
     const token = localStorage.getItem("token");
-    // const result = fetch(import.meta.env.VITE_BACKEND_URL + "auth-check", {
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // })
-    //   .then((res) => {
-    //     console.log(res);
-    //     return res.json();
-    //   })
-    //   .then((data) => {
-    //     console.log(data);
-    //     return data;
-    //   })
-    //   .catch((err) => console.error(err));
     const result = await axios
       .get("auth-check", {
         headers: {

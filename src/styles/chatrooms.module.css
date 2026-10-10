@@ -1,8 +1,10 @@
 .panel {
   width: 30%;
-  display: flex;
   /* background-color: green; */
+  min-height: 90dvh;
+  max-height: 80dvh;
   row-gap: 20px;
+  overflow: scroll;
   flex-direction: column;
   justify-content: space-between;
   padding: 1%;
@@ -24,6 +26,8 @@
   align-items: center;
   padding: 2%;
   column-gap: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: flex;
   flex-direction: row;
 }
@@ -39,14 +43,63 @@
 .chat img,
 .profileImg {
   height: 40px;
+  cursor: pointer;
   width: 40px;
   border-radius: 50%;
 }
 .profileBar {
   display: flex;
+  position: sticky;
+  bottom: 0;
   width: 100%;
   justify-content: space-around;
   align-items: center;
   background-color: oklch(0.4647 0.0171 254.7);
   padding: 3%;
+}
+
+.profileBar div {
+  display: flex;
+  align-items: center;
+  column-gap: 20px;
+}
+
+.addChatroom {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.logout {
+  background-color: oklch(50% 0.6 218);
+  border-radius: 5px;
+  padding: 2%;
+}
+
+.addChatroom svg {
+  height: 60px;
+  width: 60px;
+}
+
+.users {
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.users li {
+  border: 1px white solid;
+  padding: 1%;
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 800px) {
+  .panel {
+    width: 80%;
+    padding: 1%;
+    justify-content: space-between;
+  }
 }

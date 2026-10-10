@@ -4,9 +4,10 @@
   background-color: white;
   display: flex;
   flex-direction: column;
-  height: 90dvh;
+  /* height: 80dvh; */
+  min-height: 80dvh;
   max-height: 90dvh;
-  width: auto;
+  width: 100%;
   justify-content: space-between;
 }
 
@@ -17,6 +18,10 @@
 .convo {
   display: flex;
   border-radius: 12px 12px 0 0;
+  /* TODO: could make this transparent to allow for more seamless scrolling */
+  /* background-color: transparent; */
+  /* position: absolute; */
+  /* top: 0; */
   background-image: url("../../assets/images/pexels-valentina-restrepo-rios-337634008-13981886.jpg");
   background-size: cover;
   position: relative;
@@ -43,6 +48,7 @@
 
 .input {
   min-width: 80%;
+  margin-left: 3%;
   padding-left: 4%;
   border-radius: 12px;
   border: none;
@@ -54,6 +60,7 @@
   display: grid;
   /* background-color: red; */
   align-content: center;
+  place-content: center;
   text-align: center;
 }
 
@@ -86,11 +93,23 @@
 .form {
   display: flex;
   background-image: url("/assets/images/pexels-valentina-restrepo-rios-337634008-13981886.jpg");
+
   background-size: cover;
   border-radius: 0 0 12px 12px;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .heading {
+  color: white;
+  place-self: center;
   font-family: "Anton Sc", sans-serif;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    width: 80%;
+  }
+  .input {
+    margin-left: 0;
+  }
 }

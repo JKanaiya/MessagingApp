@@ -37,7 +37,7 @@ export type Message = {
 
 function Home() {
   const { selectedChat } = useContext(SelectionContext);
-  const [profileOpen, setProfileOpen] = useState(true);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   const token = localStorage.getItem("token");
 
@@ -91,6 +91,7 @@ function Home() {
           {
             <Chatrooms
               chats={chatrooms}
+              selectedChat={selectedChat}
               profileOpen={profileOpen}
               toggleProfileOpen={toggleProfileOpen}
             />

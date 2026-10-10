@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { IoCloseOutline } from "react-icons/io5";
 import { FiEdit2 } from "react-icons/fi";
 import UserContext from "../UserContext.tsx";
 import profile from "../styles/profile.module.css";
@@ -7,7 +8,7 @@ import AuthContext from "../AuthContext.tsx";
 import ApiCall from "../apiCalls.ts";
 import { supabase } from "../supabase.ts";
 
-function Profile() {
+function Profile({ toggleProfileOpen }: { toggleProfileOpen: () => void }) {
   const [file, setFile] = useState<null | File>(null);
   const specEmail = localStorage.getItem("messaging_app_spec_email");
   const email = specEmail
@@ -67,6 +68,7 @@ function Profile() {
 
   return (
     <div className={profile.container}>
+      <IoCloseOutline onClick={toggleProfileOpen} />
       <form className={profile.image} action={updateName}>
         <label htmlFor="upload file">
           <div
@@ -85,10 +87,16 @@ function Profile() {
           placeholder=""
           style={{ display: "none" }}
         />
-        <input placeholder={user.name} name="newName" />
-        <button type="submit">Update Name</button>
+        <input
+          placeholder={user.name}
+          name="newName"
+          className={profile.nameUpdate}
+        />
+        <button type="submit" style={{ padding: "3%", borderRadius: "5px" }}>
+          Update Name
+        </button>
       </form>
-      <button onClick={logOut}>LogOut</button>
+      {/* <button onClick={logOut}>LogOut</button> */}
     </div>
   );
 }
