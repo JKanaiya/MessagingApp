@@ -20,8 +20,8 @@ function GuestLogin() {
       throw new Error(`HTTP Error! Status: ${res.status}`);
     } else {
       upsertUser(res.data.user);
-      login(specEmail!);
-      nav("/");
+      await login(specEmail!);
+      await nav("/");
     }
   };
 
