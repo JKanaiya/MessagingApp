@@ -90,7 +90,7 @@ const ApiCall = (function () {
         password: formData.get("password"),
       })
       .catch(function (err) {
-        if (401 == err.response.status) {
+        if (401 === err.response?.status) {
           console.log("Unauthorized");
         }
         return err.response;

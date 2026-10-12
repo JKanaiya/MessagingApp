@@ -92,6 +92,7 @@ const Login = () => {
       const response = await ApiCall.logIn(formData);
 
       if (response.status != 200) {
+        console.log(response);
         throw new Error(`HTTP Error! Status: ${response.status}`);
       }
 
@@ -103,7 +104,7 @@ const Login = () => {
       await login(formData.get("email"));
       nav("/");
     } catch (e) {
-      console.log(`Error signing up: ${e}`);
+      console.log(e);
     }
   };
 

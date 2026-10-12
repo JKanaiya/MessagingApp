@@ -54,6 +54,7 @@ function Home() {
 
   const getChatrooms = async (url: string) => {
     const chats = await axios.get(url, config).catch(function (err) {
+      console.log(err);
       if (401 == err.response.status) {
         console.error("Unauthorized");
       }
