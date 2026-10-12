@@ -12,3 +12,26 @@
 .borderTopRight {
   border-top-right-radius: 20px;
 }
+
+.container {
+  padding: 4%;
+  padding-left: 5%;
+  composes: secondaryContainer from "../colors.module.css";
+  border-radius: 9px;
+  min-width: 9dvw;
+  text-wrap: wrap;
+  max-width: 40dvw;
+}
+
+.text {
+  composes: softWhite from "../colors.module.css";
+}
+
+.border {
+  composes: secondaryContainer from "../colors.module.css";
+  composes: softWhite from "../colors.module.css";
+  display: flex;
+  padding: 5px 20px;
+  color: white;
+  height: 20px;
+}

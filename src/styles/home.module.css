@@ -2,8 +2,20 @@
   font-family: "Libron";
   src: local("Libron"), url(../../assets/fonts/Libron-Regular.woff2);
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.example::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.example {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
 .home {
   padding: 2%;
+
   background-color: oklch(0.4647 0.0171 254.7);
   font-family: arial;
   background-image: url("/assets/images/pexels-valentina-restrepo-rios-337634008-13981886.jpg");

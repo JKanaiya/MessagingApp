@@ -1,5 +1,6 @@
 import type { User } from "@supabase/supabase-js";
 import type { Message } from "./Home";
+import text from "../styles/textbox.module.css";
 import TextBorder from "./TextBorder";
 import type { Chat } from "./Chat";
 
@@ -63,27 +64,18 @@ function TextBox({
         display: "flex",
         maxWidth: "70dvw",
         flexDirection: "column",
+
         background:
           alignment == "start"
-            ? "linear-gradient(90deg,  white 70%, oklch(0.1589 0.0785 12.71) 15%) "
-            : "linear-gradient(90deg,  oklch(0.1589 0.0785 12.71) 15%, white 70%) ",
+            ? "linear-gradient(90deg,  oklch(0.2601 0 0) 70%, oklch(0.1589 0.0785 12.71) 15%) "
+            : "linear-gradient(90deg,  oklch(0.1589 0.0785 12.71) 15%, oklch(0.2601 0 0) 70%) ",
       }}
     >
       {message.topBorder && (
         <TextBorder alignment={alignment} position={"top"} />
       )}
-      <div
-        style={{
-          padding: "3%",
-          paddingLeft: "5%",
-          backgroundColor: "white",
-          borderRadius: "9px",
-          minWidth: "9dvw",
-          textWrap: "wrap",
-          maxWidth: "40dvw",
-        }}
-      >
-        <p>{message.text}</p>
+      <div className={text.container}>
+        <p className={text.text}>{message.text}</p>
       </div>
       {message.bottomBorder && (
         <TextBorder

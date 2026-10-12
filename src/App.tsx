@@ -117,6 +117,7 @@ function App() {
                   errorElement=<ErrorPage />
                 />
               </Route>
+              <Route path="error" element=<ErrorPage />></Route>
             </Routes>
           </Router>
         </UserContext>

@@ -1,7 +1,8 @@
 .panel {
   padding: 2%;
   border-radius: 12px;
-  background-color: white;
+  /* background-color: white; */
+  composes: secondaryContainer from "../colors.module.css";
   display: flex;
   flex-direction: column;
   /* height: 80dvh; */
@@ -35,7 +36,6 @@
   align-items: center;
   justify-content: space-around;
   column-gap: 10px;
-  background-color: #fff;
   border-radius: 0 0 12px 12px;
   padding: 1.5%;
 }
@@ -46,8 +46,16 @@
   left: 0;
 }
 
+.close {
+  composes: softWhite from "../colors.module.css";
+  composes: secondaryContainer from "../colors.module.css";
+  border-radius: 0 0 12px 0;
+}
+
 .input {
   min-width: 80%;
+  composes: softWhite from "../colors.module.css";
+  composes: secondaryContainer from "../colors.module.css";
   margin-left: 3%;
   padding-left: 4%;
   border-radius: 12px;
@@ -76,13 +84,23 @@
   width: auto;
 }
 
+.convee {
+  composes: secondaryContainer from "../colors.module.css";
+  composes: softWhite from "../colors.module.css";
+}
+
 .panel button {
-  border-radius: 50%;
   height: 50px;
   width: 50px;
   display: flex;
   place-content: center;
   place-items: center;
+}
+
+.send {
+  border-radius: 50%;
+  composes: secondaryContainer from "../colors.module.css";
+  composes: softWhite from "../colors.module.css";
 }
 
 .panel button > svg {
@@ -100,7 +118,9 @@
 }
 
 .heading {
-  color: white;
+  /* composes: secondaryContainer from "../colors.module.css"; */
+  color: oklch(90% 0 90);
+  background-color: transparent;
   place-self: center;
   font-family: "Anton Sc", sans-serif;
 }

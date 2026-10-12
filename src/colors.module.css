@@ -3,7 +3,7 @@
 }
 
 .secondaryContainer {
-  background-color: oklch(0.3516 0.032 260.37);
+  background-color: oklch(0.2596 0 338.82);
 }
 
 .primaryColor {
@@ -11,7 +11,7 @@
 }
 
 .softWhite {
-  color: oklch(90% 0 90);
+  color: oklch(85% 0 90);
 }
 
 .softerWhite {
@@ -30,9 +30,9 @@
   color: oklch(90% 0 90);
 }
 
-.secondaryContainer {
-  color: hsl(218, 23%, 28%);
-}
+/* .secondaryContainer { */
+/*   color: hsl(218, 23%, 28%); */
+/* } */
 
 .titleFont {
   font-family: "Anton Sc", sans-serif;

@@ -31,8 +31,6 @@ function Chatrooms({
   profileOpen: boolean;
   toggleProfileOpen: () => void;
 }) {
-  // in the case of a specatator, they would be added to the relevant spectating chatrooms. In those, the new spectator ( == user), would be appended to the subusers array
-  // within the spectating chatroom, hopefully causing a mutate? should be more straightforward given the swr data is in this component
   const { isLoggedIn, logout } = useContext(AuthContext);
   const { user } = useContext(UserContext);
   const { setSelectedChat } = useContext(SelectionContext);
@@ -42,8 +40,6 @@ function Chatrooms({
   const nav = useNavigate();
   const specEmail = localStorage.getItem("messaging_app_spec_email");
   const token = localStorage.getItem("token");
-  // TODO: Socket listener for new user added to the users list. mutate users on newUser listener
-
   const logOut = () => {
     logout();
     nav("/");
@@ -86,8 +82,6 @@ function Chatrooms({
           : "";
     });
   }
-
-  console.log(users);
 
   const chatWithUser = async (user2: User) => {
     try {

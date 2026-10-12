@@ -1,7 +1,9 @@
 import Chat from "../components/Chat.tsx";
+import { useNavigate } from "react-router";
 import axios from "axios";
 import useSWR from "swr";
 import home from "../styles/home.module.css";
+import load from "../styles/load.module.css";
 import { useContext, useEffect, useState } from "react";
 import Chatrooms from "./Chatrooms.tsx";
 import SelectionContext from "../SelectionContext.tsx";
@@ -13,7 +15,7 @@ export type User = {
   name: string;
   profileImageUrl: string;
   profileImage: string | undefined;
-  lastMessage: string | undefined;
+  lastMessage: Message | undefined;
   spectator: boolean | undefined;
 };
 
@@ -39,6 +41,7 @@ function Home() {
   const { selectedChat } = useContext(SelectionContext);
   const [profileOpen, setProfileOpen] = useState(false);
 
+  const nav = useNavigate();
   const token = localStorage.getItem("token");
 
   const toggleProfileOpen = () => {
@@ -82,8 +85,16 @@ function Home() {
     mutate();
   });
 
-  // if (loading) return <h2>Loading</h2>;
-  // if (error) return <h2>Error</h2>;
+  if (loading)
+    return (
+      <div className={load.container}>
+        <img
+          src="/assets/images/blendertimer-load-410.gif"
+          className={load.icon}
+        />
+      </div>
+    );
+  if (error) nav("/error");
   return (
     <>
       {!loading && chatrooms && (

@@ -59,7 +59,6 @@ function Profile({ toggleProfileOpen }: { toggleProfileOpen: () => void }) {
         });
       const updatedUser = { ...user, profileImageUrl: newProfileImageUrl };
       error ? console.log("Err" + error) : upsertUser(updatedUser);
-      console.log(data);
     }
   };
   const userImg = supabase.storage

@@ -1,3 +1,4 @@
+import text from "../styles/textbox.module.css";
 const dayNames = [
   "Sunday",
   "Monday",
@@ -37,17 +38,13 @@ function TextBorder({
   const borderStyle = {
     borderRadius: bradius(),
     backgroundColor: "oklch(0.1487 0.0227 8.2)",
-    display: "flex",
     justifyContent: alignment == "start" ? "start" : "end",
-    padding: "5px 20px",
-    color: "white",
-    height: "20px",
   };
 
   return (
-    <span style={borderStyle}>
+    <span style={borderStyle} className={text.border}>
       {timeSent && (
-        <p>
+        <p style={{ fontSize: "0.8rem", fontStyle: "italic" }}>
           {timeDateSent.getHours()} : {timeDateSent.getMinutes()}
         </p>
       )}

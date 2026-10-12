@@ -13,7 +13,7 @@ import type { User } from "@supabase/supabase-js";
 
 export type Chat = {
   id: number;
-  lastMessage: string | null;
+  lastMessage: Message | null;
   userId: number;
   users: User[];
   messages: Message[];
@@ -85,16 +85,12 @@ function Chat({
           <div className={chat.convo}>
             <button
               onClick={() => setSelectedChat(null)}
-              style={{
-                borderRadius: "0 0 12px 0 ",
-                backgroundColor: "white",
-                color: "black",
-              }}
+              className={chat.close}
             >
               <RiCloseFill />
             </button>
             {filtered.map((user) => (
-              <h4>
+              <h4 className={chat.convee}>
                 <img src={user.profileImage} className={chatrooms.profileImg} />
                 <p>{user.name}</p>
               </h4>
@@ -110,6 +106,7 @@ function Chat({
               <input
                 onChange={(e) => setValue(e.target.value)}
                 className={chat.input}
+                placeholder="Send Message..."
               />
 
               <button
@@ -117,10 +114,9 @@ function Chat({
                 disabled={isLoading}
                 style={{
                   // transform: "translate(24px, 0)",
-                  color: "black",
                   borderRadius: "50% 0 0 50%",
-                  backgroundColor: "white",
                 }}
+                className={chat.send}
               >
                 <RiSendPlane2Line />
               </button>

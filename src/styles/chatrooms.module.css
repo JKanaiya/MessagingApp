@@ -1,6 +1,8 @@
 .panel {
   width: 30%;
   /* background-color: green; */
+  border-radius: 10px;
+  composes: secondaryContainer from "../colors.module.css";
   min-height: 90dvh;
   max-height: 80dvh;
   row-gap: 20px;
@@ -21,7 +23,7 @@
   height: 100px;
   border-radius: 10px;
   /* justify-content: space-around; */
-  border: 1px white solid;
+  /* border: 1px white solid; */
   flex-direction: column;
   align-items: center;
   padding: 2%;
@@ -48,6 +50,7 @@
   border-radius: 50%;
 }
 .profileBar {
+  border-radius: 10px;
   display: flex;
   position: sticky;
   bottom: 0;
@@ -68,6 +71,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  background-color: transparent;
   border-radius: 10px;
 }
 
