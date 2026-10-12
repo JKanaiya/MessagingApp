@@ -122,7 +122,7 @@ function Chat({
               </button>
             </form>
           ) : (
-            <h3>Spectating</h3>
+            <h3 className={chat.spectating}>Spectating</h3>
           )}
         </div>
       ) : (

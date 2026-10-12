@@ -60,6 +60,7 @@ function Home() {
       }
       return err.response;
     });
+    console.log(chats);
     return chats.data;
   };
 
@@ -81,6 +82,7 @@ function Home() {
   if (error) {
     console.log(error);
   }
+  console.log(chatrooms);
 
   socket.on("receive-message", () => {
     mutate();

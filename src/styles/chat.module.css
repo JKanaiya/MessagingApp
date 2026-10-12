@@ -124,6 +124,9 @@
   place-self: center;
   font-family: "Anton Sc", sans-serif;
 }
+.spectating {
+  composes: softWhite from "../colors.module.css";
+}
 
 @media screen and (max-width: 800px) {
   .container {
