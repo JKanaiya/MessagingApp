@@ -4,7 +4,6 @@ MessagingApp provides a front-end application to converse with other users bidir
 This API:https://github.com/JKanaiya/MessagingApi provides the functionality to facilitate this interaction.
 
 ## Features
---------
 
 - Displays the chatrooms that the user is a part of.
 - Persistent Login/Signup.
